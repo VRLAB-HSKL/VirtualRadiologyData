@@ -4,7 +4,6 @@ import cfind
 import cget
 
 
-
 class StudyWorker(QThread):
     rebound = pyqtSignal(dict)
 
@@ -18,8 +17,8 @@ class StudyWorker(QThread):
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
         data = cfind.cfind(patid=self.patid, query=self.query, studyid=self.studyid)
-        """bringt Daten in Form:
-                res = {StudyInstanceUID: (StudyDate:datetime.date, 'PatientName, PatientSex, PatientBirthDate', 'PatientID')}"""
+        """liefert Daten in Form:
+        res = {StudyInstanceUID: (StudyDate:datetime.date, 'PatientName, PatientSex, PatientBirthDate', 'PatientID')}"""
         res = {}
         for i in data:
             if i[1]:
@@ -59,8 +58,8 @@ class SeriesWorker(QThread):
     def run(self):
         """abrufen der Series-Informationen von Orthanc"""
         data = cfind.cfind(patid=self.patid, query=self.query, studyid=self.studyid)
-        """bringt Daten in Form:
-                res = {SeriesInstanceUID: (SeriesDate:datetime.datetime, 'SeriesDescription, Modality, BodyPartExamined')}"""
+        """liefert Daten in Form:
+        res = {SeriesInstanceUID: (SeriesDate:datetime.datetime, 'SeriesDescription, Modality, BodyPartExamined')}"""
         res = {}
         for i in data:
             if i[1]:
@@ -104,7 +103,6 @@ class ImageWorker(QThread):
     def run(self):
         imglist = cget.imagelist(self.seriesid, self.modality)
         self.rebound.emit(imglist)
-        #self.rebound.emit(cgetdirekt.cgetdirekt())
         self.stop()
 
     def stop(self):

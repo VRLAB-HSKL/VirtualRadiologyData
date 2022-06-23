@@ -23,11 +23,8 @@ def handle_store(event):
     ds.file_meta = event.file_meta
 
     instanceList.append(ds)
-    print("______________________________________")
     print(len(instanceList))
-    #print(type(event.dataset))
-    # Save the dataset using the SOP Instance UID as the filename
-    # ds.save_as('out.dcm', write_like_original=False)
+    print("______________________________________")
 
     # Return a 'Success' status
     return 0x0000
@@ -84,5 +81,4 @@ def imagelist(seriesid, modality):
     global instanceList
     instanceList = []
     c_get(seriesid, modality)
-    #print(instanceList)
     return instanceList

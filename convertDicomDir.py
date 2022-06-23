@@ -23,7 +23,6 @@ def imagelist(path):
 def main(argv):
     name = ''
     path = ''
-    format = 'uint16'
     try:
         opts, args = getopt.getopt(argv, "hn:p:", )
     except getopt.GetoptError:

@@ -1,9 +1,8 @@
 from PyQt6.QtWidgets import QDialog, QTreeWidgetItem
 from PyQt6.uic import loadUi
-import os
-import sys
-import threads
-import dicomToFiles
+import os, sys
+import threads, dicomToFiles
+
 
 
 class TreeView(QDialog):
@@ -86,7 +85,7 @@ class TreeView(QDialog):
 
     def image(self, key, value):
         value = value.split(", ")
-        if value[1] == 'CT' or 'CR':
+        if value[1] == 'CT':
             """abrufen der Bilder"""
             self.imagethread = None
             self.imagethread = threads.ImageWorker(value[1])
