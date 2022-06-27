@@ -60,7 +60,7 @@ def c_get(seriesid, modality):
     ds.SeriesInstanceUID = seriesid
 
     # Associate with peer AE at IP 127.0.0.1 and port 4242
-    assoc = ae.associate('127.0.0.1', 4242, ext_neg=[role], evt_handlers=handlers)
+    assoc = ae.associate('10.0.184.148', 4242, ext_neg=[role], evt_handlers=handlers)
 
     if assoc.is_established:
         # Use the C-GET service to send the identifier

@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QDialog, QTreeWidgetItem
 from PyQt6.uic import loadUi
 import os, sys
-import threads, dicomToFiles
+import threads, dicomToFiles, windowTransversal
 
 
 
@@ -101,3 +101,5 @@ class TreeView(QDialog):
             if str(elem.Modality) == 'CT':
                 print(f"{len(val) = }")
                 dicomToFiles.convert(val)
+                window = windowTransversal.WindowTransversal(val)
+            window.show()
