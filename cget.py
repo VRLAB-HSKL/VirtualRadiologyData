@@ -23,8 +23,8 @@ def handle_store(event):
     ds.file_meta = event.file_meta
 
     instanceList.append(ds)
-    print(len(instanceList))
-    print("______________________________________")
+    #print(len(instanceList))
+    #print("______________________________________")
 
     # Return a 'Success' status
     return 0x0000

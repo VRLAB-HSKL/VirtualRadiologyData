@@ -19,7 +19,12 @@ class TreeView(QDialog):
         self.seriestree.setAlternatingRowColors(True)
         self.seriestree.setHeaderLabels(["SeriesUID", "Series", "DateTime"])
         self.seriestree.itemDoubleClicked.connect(self.series_line_click_handler)
+        '''Label Einstellungen'''
+        self.label.setText("Dies ist ein Test")
+        '''PushButton Einstellungen'''
+        self.pushButton.clicked.connect(self.btnclicked)
         '''Attribute'''
+        self.data = None
         self.studythread = None
         self.seriesthread = None
         self.imagethread = None
@@ -91,7 +96,7 @@ class TreeView(QDialog):
             self.imagethread = threads.ImageWorker(value[1])
             self.imagethread.seriesid = key
             self.imagethread.start()
-            print("")
+            self.label.setText("downloading ...")
             self.imagethread.rebound.connect(self.imagehandler)
 
 
@@ -101,5 +106,11 @@ class TreeView(QDialog):
             if str(elem.Modality) == 'CT':
                 print(f"{len(val) = }")
                 dicomToFiles.convert(val)
-                window = windowTransversal.WindowTransversal(val)
+                self.data = val
+            self.label.setText("Download finished")
+            
+
+    def btnclicked(self):
+        if self.data:
+            window = windowTransversal.WindowTransversal(self.data)
             window.show()
