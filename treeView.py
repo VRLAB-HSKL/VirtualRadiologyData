@@ -4,11 +4,11 @@ import os, sys
 import threads, dicomToFiles, windowTransversal
 
 
-
 class TreeView(QDialog):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "treeView.ui"), self)
+        self.server = "10.0.27.15"
         '''Study TreeWidget Einstellungen'''
         self.studytree.hideColumn(0)
         self.studytree.setAlternatingRowColors(True)
@@ -19,9 +19,11 @@ class TreeView(QDialog):
         self.seriestree.setAlternatingRowColors(True)
         self.seriestree.setHeaderLabels(["SeriesUID", "Series", "DateTime"])
         self.seriestree.itemDoubleClicked.connect(self.series_line_click_handler)
+        #self.seriestree.itemClicked.connect(self.showdetailinfo)
         '''Label Einstellungen'''
         self.label.setText("Dies ist ein Test")
         '''PushButton Einstellungen'''
+        self.pushButton.setEnabled(False)
         self.pushButton.clicked.connect(self.btnclicked)
         '''Attribute'''
         self.data = None
@@ -33,7 +35,7 @@ class TreeView(QDialog):
     def study(self):
         """abrufen der Studies"""
         if not self.studythread:
-            self.studythread = threads.StudyWorker()
+            self.studythread = threads.StudyWorker(self.server)
             self.studythread.start()
             self.studythread.rebound.connect(self.studyhandler)
 
@@ -60,7 +62,7 @@ class TreeView(QDialog):
 
     def series(self, key, patid):
         """abrufen der Serieses"""
-        self.seriesthread = threads.SeriesWorker()
+        self.seriesthread = threads.SeriesWorker(self, self.server)
         self.seriesthread.query = 'SERIES'
         self.seriesthread.studyid = key
         self.seriesthread.patid = patid
@@ -81,22 +83,25 @@ class TreeView(QDialog):
             self.imagethread.terminate()
             self.imagethread = None
             print('Thread terminated!')
-        else:
-            item = self.seriestree.currentItem()
-            key = item.text(0)
-            value = item.text(1)
-            print(key, value)
-            self.image(key, value)
+        self.pushButton.setEnabled(False)
+        item = self.seriestree.currentItem()
+        key = item.text(0)
+        value = item.text(1)
+        print(key, value)
+        self.image(key, value)
+    
+    #def showdetailinfo(self):
+       
 
     def image(self, key, value):
         value = value.split(", ")
         if value[1] == 'CT':
             """abrufen der Bilder"""
             self.imagethread = None
-            self.imagethread = threads.ImageWorker(value[1])
+            self.imagethread = threads.ImageWorker(self, self.server, value[1])
             self.imagethread.seriesid = key
             self.imagethread.start()
-            self.label.setText("downloading ...")
+            self.pushButton.setText("downloading ...")
             self.imagethread.rebound.connect(self.imagehandler)
 
 
@@ -107,7 +112,8 @@ class TreeView(QDialog):
                 print(f"{len(val) = }")
                 dicomToFiles.convert(val)
                 self.data = val
-            self.label.setText("Download finished")
+            self.pushButton.setEnabled(True)
+            self.pushButton.setText("Bilder anzeigen")
             
 
     def btnclicked(self):

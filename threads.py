@@ -7,16 +7,17 @@ import cget
 class StudyWorker(QThread):
     rebound = pyqtSignal(dict)
 
-    def __init__(self, parent=None, query="STUDY"):
+    def __init__(self, server, parent=None, query="STUDY"):
         QThread.__init__(self, parent)
         print("Thread startet!")
+        self.server = server
         self.query = query
         self.patid = ''
         self.studyid = ''
 
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
-        data = cfind.cfind(patid=self.patid, query=self.query, studyid=self.studyid)
+        data = cfind.cfind(self.server, patid=self.patid, query=self.query, studyid=self.studyid)
         """liefert Daten in Form:
         res = {StudyInstanceUID: (StudyDate:datetime.date, 'PatientName, PatientSex, PatientBirthDate', 'PatientID')}"""
         res = {}
@@ -48,16 +49,18 @@ class StudyWorker(QThread):
 class SeriesWorker(QThread):
     rebound = pyqtSignal(dict)
 
-    def __init__(self, parent=None, query="Study"):
+    def __init__(self, treeview, server, parent=None, query="Study"):
         QThread.__init__(self, parent)
         print("Thread startet!")
+        self.server = server
         self.query = query
         self.patid = ''
         self.studyid = ''
+        self.treeview = treeview
 
     def run(self):
         """abrufen der Series-Informationen von Orthanc"""
-        data = cfind.cfind(patid=self.patid, query=self.query, studyid=self.studyid)
+        data = cfind.cfind(self.server, patid=self.patid, query=self.query, studyid=self.studyid)
         """liefert Daten in Form:
         res = {SeriesInstanceUID: (SeriesDate:datetime.datetime, 'SeriesDescription, Modality, BodyPartExamined')}"""
         res = {}
@@ -83,6 +86,7 @@ class SeriesWorker(QThread):
                 value = (dati.strftime("%Y-%m-%d, %H:%M:%S"), val)
                 res[key] = value
                 print("_______")
+        self.treeview.label.setText("In threads geschrieben!")
         self.rebound.emit(res)
         self.stop()
 
@@ -94,14 +98,43 @@ class SeriesWorker(QThread):
 class ImageWorker(QThread):
     rebound = pyqtSignal(list)
 
-    def __init__(self, modality, parent=None):
+    def __init__(self, treeview, server, modality, parent=None):
         QThread.__init__(self, parent)
+        self.treeview = treeview
+        self.server = server
         self.modality = modality
         self.seriesid = ''
         print("Thread startet!")
 
     def run(self):
-        imglist = cget.imagelist(self.seriesid, self.modality)
+        imglist = cget.imagelist(self.server, self.seriesid, self.modality)
+        ds = imglist[0]
+        self.treeview.label.setText(f"{ds.PatientName = }\n"
+                                    f"{ds.PatientID = }\n"
+                                    f"{ds.PatientBirthDate = }\n"
+                                    f"{ds.PatientSex = }\n"
+                                    f"{ds.InstitutionName = }\n"
+                                    f"{ds.ReferringPhysicianName = }\n"
+                                    f"{ds.StudyDescription = }\n"
+                                    f"{ds.Modality = }\n"
+                                    f"{ds.Manufacturer = }\n"
+                                    f"{ds.StudyID = }\n"
+                                    f"{ds.StudyDate = }\n"
+                                    f"{ds.SeriesNumber = }\n"
+                                    f"{ds.PixelSpacing[0] = }\n"
+                                    f"{ds.PixelSpacing[1] = }\n"
+                                    f"{ds.SliceThickness = }\n"
+                                    f"{ds.Columns = }\n"
+                                    f"{ds.Rows = }\n"
+                                    f"{ds.ImagePositionPatient[0] = }\n"
+                                    f"{ds.ImagePositionPatient[1] = }\n"
+                                    f"{ds.ImagePositionPatient[2] = }\n"
+                                    f"{ds.ImageOrientationPatient[0] = }\n"
+                                    f"{ds.ImageOrientationPatient[1] = }\n"
+                                    f"{ds.ImageOrientationPatient[2] = }\n"
+                                    f"{ds.ImageOrientationPatient[3] = }\n"
+                                    f"{ds.ImageOrientationPatient[4] = }\n"
+                                    f"{ds.ImageOrientationPatient[5] = }")
         self.rebound.emit(imglist)
         self.stop()
 

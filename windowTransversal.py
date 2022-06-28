@@ -47,11 +47,12 @@ class WindowTransversal(QDialog):
                  self.bildDaten.red, 1, cv2.LINE_4)
         cv2.rectangle(cvimage, (0, 0), (cvimage.shape[0]-1, cvimage.shape[1]-1), self.bildDaten.cyan, 1,
                       cv2.LINE_4)
+        cv2.putText(cvimage, f"Cross = {self.bildDaten.cross}", (10, cvimage.shape[0]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (40, 200, 230), 1)
 
         fenster.show(self, cvimage)
 
     def wheelEvent(self, event):
-        z = (self.bildDaten.cross[0] + event.angleDelta().y() / 120) % len(self.bildDaten.cube)
+        z = (self.bildDaten.cross[0] - event.angleDelta().y() / 120) % len(self.bildDaten.cube)
         self.bildDaten.cross = (int(z), self.bildDaten.cross[1], self.bildDaten.cross[2])
         self.get_image()
         self.fenster.frontal.get_image()

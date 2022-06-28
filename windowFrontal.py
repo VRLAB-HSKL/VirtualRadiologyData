@@ -50,7 +50,7 @@ class WindowFrontal(QDialog):
         fenster.show(self, cvimage)
 
     def wheelEvent(self, event):
-        y = (self.bildDaten.cross[2] + event.angleDelta().y() / 120) % self.bildDaten.cube.shape[2]
+        y = (self.bildDaten.cross[2] - event.angleDelta().y() / 120) % self.bildDaten.cube.shape[2]
         self.bildDaten.cross = (self.bildDaten.cross[0], self.bildDaten.cross[1], int(y))
         self.get_image()
         self.fenster.transversal.get_image()

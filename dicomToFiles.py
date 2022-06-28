@@ -9,7 +9,7 @@ def convert(imglist, name=None):
         pass
     else:
         name = ds.SeriesDescription.replace(" ", "")
-    print(f"{ds = }")
+    #print(f"{ds = }")
     with open(f"{name}.txt", "w") as ftxt:
         ftxt.write(f"{ds.PatientName}\n"
                    f"{ds.PatientID}\n"

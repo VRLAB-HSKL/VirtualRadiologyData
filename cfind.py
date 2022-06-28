@@ -6,7 +6,7 @@ from pynetdicom.sop_class import PatientRootQueryRetrieveInformationModelFind
 #debug_logger()
 
 
-def cfind(patname="", patid="", query='PATIENT', studyid=""):
+def cfind(server, patname="", patid="", query='PATIENT', studyid=""):
     ae = AE()
     ae.add_requested_context(PatientRootQueryRetrieveInformationModelFind)
 
@@ -29,7 +29,7 @@ def cfind(patname="", patid="", query='PATIENT', studyid=""):
     ds.BodyPartExamined = ''
 
     # Associate with the peer AE at IP 127.0.0.1 and port 11112
-    assoc = ae.associate("10.0.184.148", 4242)
+    assoc = ae.associate(server, 4242)
     if assoc.is_established:
         # Send the C-FIND request
         responses = assoc.send_c_find(ds, PatientRootQueryRetrieveInformationModelFind)

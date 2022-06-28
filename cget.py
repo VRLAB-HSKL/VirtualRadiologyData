@@ -30,7 +30,7 @@ def handle_store(event):
     return 0x0000
 
 
-def c_get(seriesid, modality):
+def c_get(server, seriesid, modality):
     handlers = [(evt.EVT_C_STORE, handle_store)]
 
     # Initialise the Application Entity
@@ -60,7 +60,7 @@ def c_get(seriesid, modality):
     ds.SeriesInstanceUID = seriesid
 
     # Associate with peer AE at IP 127.0.0.1 and port 4242
-    assoc = ae.associate('10.0.184.148', 4242, ext_neg=[role], evt_handlers=handlers)
+    assoc = ae.associate(server, 4242, ext_neg=[role], evt_handlers=handlers)
 
     if assoc.is_established:
         # Use the C-GET service to send the identifier
@@ -77,8 +77,8 @@ def c_get(seriesid, modality):
         print('Association rejected, aborted or never connected')
 
 
-def imagelist(seriesid, modality):
+def imagelist(server, seriesid, modality):
     global instanceList
     instanceList = []
-    c_get(seriesid, modality)
+    c_get(server, seriesid, modality)
     return instanceList
