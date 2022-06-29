@@ -40,7 +40,7 @@ def main(argv):
             path = arg
 
     imglist = imagelist(path)
-    dicomToFiles.convert(imglist, name)
+    dicomToFiles.convert(imglist, name=name)
 
 if __name__ == "__main__":
    main(sys.argv[1:])

@@ -1,5 +1,6 @@
-import datetime
+import datetime, subprocess
 from PyQt6.QtCore import QThread, pyqtSignal
+from pydicom.dataset import Dataset
 import cfind
 import cget
 
@@ -7,17 +8,23 @@ import cget
 class StudyWorker(QThread):
     rebound = pyqtSignal(dict)
 
-    def __init__(self, server, parent=None, query="STUDY"):
+    def __init__(self, server, parent=None):
         QThread.__init__(self, parent)
         print("Thread startet!")
         self.server = server
-        self.query = query
-        self.patid = ''
-        self.studyid = ''
+        self.ds = Dataset()
+        self.ds.QueryRetrieveLevel = "STUDY"
+        self.ds.PatientName = ""
+        self.ds.PatientID = ""
+        self.ds.PatientSex = ''
+        self.ds.PatientBirthDate = ''
+        self.ds.StudyInstanceUID = ""
+        self.ds.StudyDate = ''
+        self.ds.Modality = ''
 
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
-        data = cfind.cfind(self.server, patid=self.patid, query=self.query, studyid=self.studyid)
+        data = cfind.cfind(self.server, self.ds)
         """liefert Daten in Form:
         res = {StudyInstanceUID: (StudyDate:datetime.date, 'PatientName, PatientSex, PatientBirthDate', 'PatientID')}"""
         res = {}
@@ -49,18 +56,23 @@ class StudyWorker(QThread):
 class SeriesWorker(QThread):
     rebound = pyqtSignal(dict)
 
-    def __init__(self, treeview, server, parent=None, query="Study"):
+    def __init__(self, treeview, server, key, patid, parent=None):
         QThread.__init__(self, parent)
         print("Thread startet!")
         self.server = server
-        self.query = query
-        self.patid = ''
-        self.studyid = ''
+        self.ds = Dataset()
+        self.ds.QueryRetrieveLevel = "SERIES"
+        self.ds.StudyInstanceUID = key
+        self.ds.PatientID = patid
+        self.ds.SeriesDate = ''
+        self.ds.SeriesDescription = ''
+        self.ds.Modality = ""
+        self.ds.BodyPartExamined = ''
         self.treeview = treeview
 
     def run(self):
         """abrufen der Series-Informationen von Orthanc"""
-        data = cfind.cfind(self.server, patid=self.patid, query=self.query, studyid=self.studyid)
+        data = cfind.cfind(self.server, self.ds)
         """liefert Daten in Form:
         res = {SeriesInstanceUID: (SeriesDate:datetime.datetime, 'SeriesDescription, Modality, BodyPartExamined')}"""
         res = {}
@@ -141,3 +153,4 @@ class ImageWorker(QThread):
     def stop(self):
         print("stopping thread!")
         self._isRunning = False
+

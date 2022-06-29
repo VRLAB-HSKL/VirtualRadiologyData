@@ -83,11 +83,22 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Bilder anzeigen</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="schichtenBtn">
+         <property name="text">
+          <string>Bilder anzeigen</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="vrBtn">
+         <property name="text">
+          <string>Bilder in VR anzeigen</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

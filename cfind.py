@@ -6,22 +6,12 @@ from pynetdicom.sop_class import PatientRootQueryRetrieveInformationModelFind
 #debug_logger()
 
 
-def cfind(server, patname="", patid="", query='PATIENT', studyid=""):
+def cfind(server, ds):
     ae = AE()
     ae.add_requested_context(PatientRootQueryRetrieveInformationModelFind)
 
     # Create our Identifier (query) dataset
-    ds = Dataset()
-    ds.QueryRetrieveLevel = query
-    ds.PatientName = patname
-    ds.PatientID = patid
-    ds.PatientSex = ''
-    ds.PatientBirthDate = ''
-    ds.StudyInstanceUID = studyid
-    ds.StudyDescription = ''
-    ds.StudyDate = ''
-    ds.Modality = ''
-
+    
     ds.SeriesInstanceUID = ''
     ds.SeriesDate = ''
     ds.SeriesTime = ''

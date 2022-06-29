@@ -1,16 +1,20 @@
 import numpy as np
 
 
-def convert(imglist, name=None):
+def convert(imglist, path=None, name=None):
+    if path is None:
+        path = ""
+    else:
+        path = f"{path}\\"
     form = 'uint16'
-
+        
     ds = imglist[0]
     if name:
         pass
     else:
         name = ds.SeriesDescription.replace(" ", "")
     #print(f"{ds = }")
-    with open(f"{name}.txt", "w") as ftxt:
+    with open(f"{path}\\{name}.txt", "w") as ftxt:
         ftxt.write(f"{ds.PatientName}\n"
                    f"{ds.PatientID}\n"
                    f"{ds.PatientBirthDate}\n"
@@ -38,7 +42,7 @@ def convert(imglist, name=None):
                    f"{ds.ImageOrientationPatient[4]}\n"
                    f"{ds.ImageOrientationPatient[5]}\n")
 
-    with open(f"{name}.ini", "w") as fini:
+    with open(f"{path}\\{name}.ini", "w") as fini:
         fini.write(f"dimx:{ds.Columns}\n"
                    f"dimy:{ds.Rows}\n"
                    f"dimz:{len(imglist)}\n"
@@ -49,4 +53,4 @@ def convert(imglist, name=None):
     for i in imglist:
         pixellst.append(i.pixel_array)
     cube = np.asarray(pixellst)
-    cube.astype(form).tofile(f"{name}.raw")
+    cube.astype(form).tofile(f"{path}\\{name}.raw")
