@@ -8,7 +8,7 @@ class TreeView(QDialog):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "treeView.ui"), self)
-        self.server = "10.0.27.15"
+        self.server = "raspberrypi"
         '''Study TreeWidget Einstellungen'''
         self.studytree.hideColumn(0)
         self.studytree.setAlternatingRowColors(True)

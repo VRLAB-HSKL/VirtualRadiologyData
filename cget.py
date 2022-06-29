@@ -81,4 +81,5 @@ def imagelist(server, seriesid, modality):
     global instanceList
     instanceList = []
     c_get(server, seriesid, modality)
+    instanceList.sort(key=lambda i: i.ImagePositionPatient[2], reverse=True)
     return instanceList
