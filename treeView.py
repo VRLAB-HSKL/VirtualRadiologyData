@@ -8,7 +8,7 @@ class TreeView(QDialog):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "treeView.ui"), self)
-        self.server = "10.0.27.15"
+        self.server = "10.0.27.2"
         '''Study TreeWidget Einstellungen'''
         self.studytree.hideColumn(0)
         self.studytree.setAlternatingRowColors(True)
@@ -25,6 +25,7 @@ class TreeView(QDialog):
         '''PushButton Einstellungen'''
         self.schichtenBtn.setEnabled(False)
         self.schichtenBtn.clicked.connect(self.schichtenbtn_clicked)
+        self.vrBtn.setEnabled(False)
         self.vrBtn.clicked.connect(self.vrBtn_clicked)
         '''Attribute'''
         self.data = None
@@ -88,6 +89,7 @@ class TreeView(QDialog):
             self.imagethread = None
             print('Thread terminated!')
         self.schichtenBtn.setEnabled(False)
+        self.vrBtn.setEnabled(False)
         item = self.seriestree.currentItem()
         key = item.text(0)
         value = item.text(1)
@@ -117,6 +119,7 @@ class TreeView(QDialog):
                 dicomToFiles.convert(val, path=self.tempdir.name)
                 self.data = val
             self.schichtenBtn.setEnabled(True)
+            self.vrBtn.setEnabled(True)
             self.schichtenBtn.setText("Bilder anzeigen")
             
 
@@ -126,4 +129,4 @@ class TreeView(QDialog):
             window.show()
             
     def vrBtn_clicked(self):
-        subprocess.Popen(["C:\\Users\\RHoock\\Desktop\\VirtualRadiologyBuild\\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", "Head"])
+        subprocess.Popen([r"C:\Users\RHoock\Desktop\VirtualRadiologyBuild\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", "Head"])

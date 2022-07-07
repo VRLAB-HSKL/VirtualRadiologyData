@@ -1,14 +1,16 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
+import struct
 
 def convert(imglist, path=None, name=None):
     if path is None:
         path = ""
     else:
         path = f"{path}\\"
-    form = 'uint16'
+    form = 'uint8'
         
     ds = imglist[0]
+    ds.InstitutionAddress = ds.InstitutionAddress if ("InstitutionAddress" in ds) else 'Unknown'
     if name:
         pass
     else:
@@ -20,6 +22,7 @@ def convert(imglist, path=None, name=None):
                    f"{ds.PatientBirthDate}\n"
                    f"{ds.PatientSex}\n"
                    f"{ds.InstitutionName}\n"
+                   f"{ds.InstitutionAddress}\n"
                    f"{ds.ReferringPhysicianName}\n"
                    f"{ds.StudyDescription}\n"
                    f"{ds.Modality}\n"
@@ -53,4 +56,19 @@ def convert(imglist, path=None, name=None):
     for i in imglist:
         pixellst.append(i.pixel_array)
     cube = np.asarray(pixellst)
+    cube = cube*(255/cube.max())
+    cube = cube.astype("uint8")
+    cube = cube[::-1, :, ::-1]
+    '''cube = cube[::2, ::2, ::2]
+    array = cube.flatten()
+    #array = array[::-1]
+    print(array.dtype)
+    with open(f"{path}\\{name}.raw", "wb") as fini:
+        for i in range(3):
+            fini.write(struct.pack('>I', cube.shape[i]))
+        fini.write(struct.pack('>I', 0))
+        for i in range(3):
+            fini.write(struct.pack('>f', 1))
+        for i in array:
+            fini.write(struct.pack('>B', i))'''
     cube.astype(form).tofile(f"{path}\\{name}.raw")
