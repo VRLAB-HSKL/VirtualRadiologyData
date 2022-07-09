@@ -8,7 +8,7 @@ class TreeView(QDialog):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "treeView.ui"), self)
-        self.server = "10.0.27.2"
+        self.server = "127.0.0.1"
         '''Study TreeWidget Einstellungen'''
         self.studytree.hideColumn(0)
         self.studytree.setAlternatingRowColors(True)
@@ -129,4 +129,4 @@ class TreeView(QDialog):
             window.show()
             
     def vrBtn_clicked(self):
-        subprocess.Popen([r"C:\Users\RHoock\Desktop\VirtualRadiologyBuild\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", "Head"])
+        subprocess.Popen([r".\VirtualRadiologyBuild\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", "Head"])

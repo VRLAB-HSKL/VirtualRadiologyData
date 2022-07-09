@@ -1,5 +1,9 @@
+VirtualRadiologyBuild/
+venv/
+__pychache__/
 .idea/
 *.pyc
 *.ini
 *.raw
 *.txt
+
