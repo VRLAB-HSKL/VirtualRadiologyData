@@ -1,9 +1,9 @@
 from PyQt6.QtWidgets import QApplication
 import sys
-import treeView
+import treeView, menu
 
 app = QApplication(sys.argv)
-window = treeView.TreeView()
+window = menu.Menu()
 window.show()
 
 try:

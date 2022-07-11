@@ -56,14 +56,14 @@ class StudyWorker(QThread):
 class SeriesWorker(QThread):
     rebound = pyqtSignal(dict)
 
-    def __init__(self, treeview, server, key, patid, parent=None):
+    def __init__(self, treeview, server, key, parent=None):
         QThread.__init__(self, parent)
         print("Thread startet!")
         self.server = server
         self.ds = Dataset()
         self.ds.QueryRetrieveLevel = "SERIES"
         self.ds.StudyInstanceUID = key
-        self.ds.PatientID = patid
+        self.ds.PatientID = ""
         self.ds.SeriesDate = ''
         self.ds.SeriesDescription = ''
         self.ds.Modality = ""

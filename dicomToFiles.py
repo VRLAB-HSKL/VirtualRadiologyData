@@ -59,7 +59,7 @@ def convert(imglist, path=None, name=None):
     cube = cube*(255/cube.max())
     cube = cube.astype("uint8")
     cube = cube[::-1, :, ::-1]
-    cube = cube[::2, ::2, ::2]
+    #cube = cube[::2, ::2, ::2]
     '''array = cube.flatten()
     #array = array[::-1]
     print(array.dtype)
