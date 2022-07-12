@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication
 import sys
-import treeView, menu
+import menu
 
 app = QApplication(sys.argv)
 window = menu.Menu()

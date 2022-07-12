@@ -1,4 +1,4 @@
-import cfind, datetime
+import cfind, datetime, menu
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -18,7 +18,9 @@ class Series():
     def from_ds(cls, ds):
         Series(ds.SeriesInstanceUID, ds.StudyInstanceUID, ds.SeriesDate, ds.SeriesDescription, ds.Modality)
 
-    
+    def toTreeView(self):
+        return [self.UID, self.serdesc, menu.toISOdate(self.serdate)]    
+
 class SeriesWorker(QThread):
     rebound = pyqtSignal(str)
     
@@ -27,7 +29,7 @@ class SeriesWorker(QThread):
         print("Thread startet!")
         self.server = server
         self.ds = Dataset()
-        self.ds.QueryRetrieveLevel = "STUDY"
+        self.ds.QueryRetrieveLevel = "SERIES"
         self.ds.StudyInstanceUID = stduid
         self.ds.SeriesInstanceUID = ""
         self.ds.SeriesDate = ""
@@ -40,7 +42,7 @@ class SeriesWorker(QThread):
         for i in data:
             if i[1]:
                 elem = i[1]
-                res = elem.SeriesInstanceUID
+                res = elem.StudyInstanceUID
                 Series.from_ds(elem)
         self.rebound.emit(res)
         self.stop()

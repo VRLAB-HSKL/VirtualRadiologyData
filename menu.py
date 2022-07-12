@@ -1,15 +1,16 @@
 from PyQt6.QtWidgets import QDialog, QTreeWidgetItem
 from PyQt6.uic import loadUi
-import os, sys, subprocess, tempfile, patient, threading, study, series, datetime, threads, dicomToFiles, windowTransversal
+import os, sys, image, subprocess, tempfile, patient, threading, study, series, datetime, dicomToFiles, windowTransversal
 
 def toISOdate(dcmdate):
     date = str(dcmdate)
     if len(date) == 8:
         date = [date[0:4], date[4:6], date[6:8]]
         date = datetime.date(int(date[0]), int(date[1]), int(date[2]))
+        date = date.strftime("%Y-%m-%d")
     else:
-        date = ['0000', '00', '00']
-    return date.strftime("%Y-%m-%d")
+        date = "Unkown"
+    return date
 
 class Menu(QDialog):
     def __init__(self):
@@ -27,9 +28,9 @@ class Menu(QDialog):
         self.studytree.setHeaderLabels(["StudyUID", "PatientID", "StudyDate", "StudyDescription"])
         self.studytree.itemClicked.connect(self.study_line_click_handler)
         '''Series TreeWidget Einstellungen'''
-        self.seriestree.hideColumn(0)
+        #self.seriestree.hideColumn(0)
         self.seriestree.setAlternatingRowColors(True)
-        self.seriestree.setHeaderLabels(["SeriesUID", "Series", "DateTime"])
+        self.seriestree.setHeaderLabels(["SeriesUID", "SeriesDescription", "SeriesDate"])
         self.seriestree.itemDoubleClicked.connect(self.series_line_click_handler)
         #self.seriestree.itemClicked.connect(self.showdetailinfo)
         '''Label Einstellungen'''
@@ -40,131 +41,117 @@ class Menu(QDialog):
         self.vrBtn.setEnabled(False)
         self.vrBtn.clicked.connect(self.vrBtn_clicked)
         '''Attribute'''
+        self.role = 'patient'
         self.data = None
-        self.patientthread = None
-        self.studythread = None
-        self.seriesthread = None
+        self.thread = None
+        self.id = None
         self.imagethread = None
         self.tempdir = tempfile.TemporaryDirectory()
         print(self.tempdir.name)
-        self.loadPatients()
+        self.loadData()
         
     
     def __del__(self):
         self.tempdir.cleanup()
         print("tempdir gelöscht")
         
-    def loadPatients(self):
-        if not self.patientthread:
-            self.patientthread = patient.PatientWorker(self.server)
-            self.patientthread.start()
-            self.patientthread.rebound.connect(self.patienthandler)
         
-                
-    def patienthandler(self, val):
-        for k, v in patient.Patient.patients.items():
-                line = QTreeWidgetItem([v.id, v.patname, v.patsex, toISOdate(v.patbirthdate)])
-                self.patienttree.addTopLevelItem(line)
+    def loadData(self):
+        if self.role == 'patient':
+            self.thread = patient.PatientWorker(self.server)
+        if self.role == 'study':
+            self.thread = study.StudyWorker(self.server, self.id)
+        if self.role == 'series':
+            self.thread = series.SeriesWorker(self.server, self.id)  
+        if self.role == 'image':
+            self.thread = image.ImageWorker(self.server, self.id)
+            self.schichtenBtn.setText("downloading ...")
+        self.thread.start()
+        self.thread.rebound.connect(self.loadhandler)
+        
+    def loadhandler(self):
+        if self.role == 'patient':
+            dictionary = patient.Patient.patients
+            tree = self.patienttree
+        if self.role == 'study':
+            dictionary = study.Study.studies
+            tree = self.studytree
+            tree.clear()
+        if self.role == 'series':
+            dictionary = series.Series.serieses
+            tree = self.seriestree
+            tree.clear()
+        if self.role == 'image':
+            dictionary = image.Image.images
+        for k, v in dictionary.items():
+            if self.role == 'study' and self.id != v.patid:
+                continue
+            if self.role == 'series' and self.id != v.stduid:
+                continue
+            if self.role == 'image':
+                if k == self.id:
+                    dicomToFiles.convert(v.imglist, path=self.tempdir.name)
+                    self.data = v.imglist
+                    self.schichtenBtn.setEnabled(True)
+                    self.vrBtn.setEnabled(True)
+                    self.schichtenBtn.setText("Bilder anzeigen")
+            else:
+                line = QTreeWidgetItem(v.toTreeView())
+                tree.addTopLevelItem(line)
+        
         
     def patient_line_click_handler(self):
-        if self.studythread:
-            self.studythread.terminate()
-            self.studythread = None
+        self.role = 'study'
+        if self.thread:
+            self.thread.terminate()
+            self.thread = None
             print('Thread terminated!')
         item = self.patienttree.currentItem()
-        patid = str(item.text(0))
-        self.studytree.clear()
-        if any(v.patid == patid for k, v in study.Study.studies.items()):
-            for k, v in study.Study.studies.items():
-                if patid == v.patid:
-                    self.studyhandler(patid)
+        self.id = str(item.text(0))
+        self.seriestree.clear()
+        if any(v.patid == self.id for k, v in study.Study.studies.items()):
+            self.loadhandler()
         else:
-            self.loadStudies(item.text(0))
+            self.loadData()
+    
             
-    def loadStudies(self, patid):
-        if not self.seriesthread:
-            self.studythread = study.StudyWorker(self.server, patid)
-            self.studythread.start()
-            self.studythread.rebound.connect(self.studyhandler)
-       
-    def studyhandler(self, val):
-        for k, v in study.Study.studies.items():
-            if v.patid == val:
-                line = QTreeWidgetItem([v.UID, v.patid, toISOdate(v.stddate), v.stddesc])
-                self.studytree.addTopLevelItem(line)
-                
     def study_line_click_handler(self):
+        self.role = 'series'
         """auswählen einer Study"""
-        if self.seriesthread:
-            self.seriesthread.terminate()
-            self.seriesthread = None
+        if self.thread:
+            self.thread.terminate()
+            self.thread = None
             print('Thread terminated!')
         item = self.studytree.currentItem()
-        key = item.text(0)
-        self.loadSeries(key)
-
-    def loadSeries(self, key):
-        """abrufen der Serieses"""
-        if not self.seriesthread:
-            self.seriesthread = series.SeriesWorker(self.server, key)
-            self.seriesthread.start()
-            self.seriesthread.rebound.connect(self.serieshandler)
-
-    def serieshandler(self, val):
-        """anzeigen der Series-Informationen"""
-        self.seriestree.clear()
-        for k, v in study.Study.studies.items():
-            if v.UID == val:
-                line = QTreeWidgetItem([v.UID, v.stdid, toISOdate(v.serdate), v.serdesc])
-                self.studytree.addTopLevelItem(line)
-        self.seriesthread = None
+        self.id = item.text(0)
+        if any(v.stduid == self.id for k, v in series.Series.serieses.items()):
+            self.loadhandler()
+        else:
+            self.loadData()
 
     def series_line_click_handler(self):
+        self.role = 'image'
         """auswählen einer Series"""
-        if self.imagethread:
-            self.imagethread.terminate()
-            self.imagethread = None
+        if self.thread:
+            self.thread.terminate()
+            self.thread = None
             print('Thread terminated!')
         self.schichtenBtn.setEnabled(False)
         self.vrBtn.setEnabled(False)
         item = self.seriestree.currentItem()
-        key = item.text(0)
-        value = item.text(1)
-        print(key, value)
-        self.image(key, value)
+        self.id = item.text(0)
+        if any(k == self.id for k, v in image.Image.images.items()):
+            self.loadhandler()
+        else:
+            self.loadData()
     
-    #def showdetailinfo(self):
-       
-
-    def image(self, key, value):
-        value = value.split(", ")
-        if value[1] == 'CT':
-            """abrufen der Bilder"""
-            self.imagethread = None
-            self.imagethread = threads.ImageWorker(self, self.server, value[1])
-            self.imagethread.seriesid = key
-            self.imagethread.start()
-            self.schichtenBtn.setText("downloading ...")
-            self.imagethread.rebound.connect(self.imagehandler)
-
-
-    def imagehandler(self, val):
-        if val[0]:
-            elem = val[0]
-            if str(elem.Modality) == 'CT':
-                print(f"{len(val) = }")
-                dicomToFiles.convert(val, path=self.tempdir.name)
-                self.data = val
-            self.schichtenBtn.setEnabled(True)
-            self.vrBtn.setEnabled(True)
-            self.schichtenBtn.setText("Bilder anzeigen")
-    
+           
     def schichtenbtn_clicked(self):
         if self.data:
             window = windowTransversal.WindowTransversal(self.data)
             window.show()
             
     def vrBtn_clicked(self):
-        subprocess.Popen([r"C:\Users\RHoock\Desktop\VirtualRadiologyBuild\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", "Head"])
+        subprocess.Popen([r"C:\Users\RHoock\Desktop\VirtualRadiologyBuild\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", "EveHead"])
         
 

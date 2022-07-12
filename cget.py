@@ -30,7 +30,7 @@ def handle_store(event):
     return 0x0000
 
 
-def c_get(server, seriesid, modality):
+def c_get(server, seriesid):
     handlers = [(evt.EVT_C_STORE, handle_store)]
 
     # Initialise the Application Entity
@@ -39,13 +39,16 @@ def c_get(server, seriesid, modality):
     # Add the requested presentation contexts (QR SCU)
     ae.add_requested_context(PatientRootQueryRetrieveInformationModelGet)
     # Add the requested presentation context (Storage SCP)
+    '''
     if modality == 'CT':
         ae.add_requested_context(CTImageStorage)
         role = build_role(CTImageStorage, scp_role=True)
     if modality == 'CR':
         ae.add_requested_context(ComputedRadiographyImageStorage)
         role = build_role(ComputedRadiographyImageStorage, scp_role=True)
-
+    '''
+    ae.add_requested_context(CTImageStorage)
+    role = build_role(CTImageStorage, scp_role=True)
 
     # Create our Identifier (query) dataset
     # We need to supply a Unique Key Attribute for each level above the
@@ -58,7 +61,6 @@ def c_get(server, seriesid, modality):
     ds.StudyInstanceUID = ''
     # Unique key for SERIES level
     ds.SeriesInstanceUID = seriesid
-
     # Associate with peer AE at IP 127.0.0.1 and port 4242
     assoc = ae.associate(server, 4242, ext_neg=[role], evt_handlers=handlers)
 
@@ -77,9 +79,9 @@ def c_get(server, seriesid, modality):
         print('Association rejected, aborted or never connected')
 
 
-def imagelist(server, seriesid, modality):
+def imagelist(server, seriesid):
     global instanceList
     instanceList = []
-    c_get(server, seriesid, modality)
+    c_get(server, seriesid)
     instanceList.sort(key=lambda i: i.ImagePositionPatient[2], reverse=True)
     return instanceList

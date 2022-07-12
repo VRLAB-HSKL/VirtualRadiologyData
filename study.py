@@ -1,6 +1,7 @@
 import cfind, datetime
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
+import menu
 
 class Study():
     
@@ -18,6 +19,9 @@ class Study():
     @classmethod        
     def from_ds(cls, ds):
         Study(ds.StudyInstanceUID, ds.PatientID, ds.StudyDate, ds.StudyDescription, ds.StudyID, ds.ReferringPhysicianName)
+        
+    def toTreeView(self):
+        return [self.UID, self.patid, menu.toISOdate(self.stddate), self.stddesc]
 
     
 class StudyWorker(QThread):
@@ -43,7 +47,7 @@ class StudyWorker(QThread):
         for i in data:
             if i[1]:
                 elem = i[1]
-                res = elem.StudyInstanceUID
+                res = elem.PatientID
                 Study.from_ds(elem)
         self.rebound.emit(res)
         self.stop()

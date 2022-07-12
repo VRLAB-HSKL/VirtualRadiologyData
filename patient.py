@@ -1,4 +1,4 @@
-import cfind, datetime, threading, time
+import cfind, datetime, threading, time, menu
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -16,6 +16,9 @@ class Patient():
     @classmethod        
     def from_ds(cls, ds):
         Patient(ds.PatientID, str(ds.PatientName), ds.PatientSex, ds.PatientBirthDate)
+        
+    def toTreeView(self):
+        return [self.id, self.patname, self.patsex, menu.toISOdate(self.patbirthdate)]
 
     
 class PatientWorker(QThread):
