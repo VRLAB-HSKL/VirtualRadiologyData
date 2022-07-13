@@ -7,18 +7,16 @@ class Study():
     
     studies = {}
     
-    def __init__(self, uid, patid, stddate, stddesc, stdid, refphysname):
-        self.UID = uid
-        self.patid = patid
-        self.stddate = stddate
-        self.stddesc = stddesc
-        self.stdid = stdid
-        self.refphysname = refphysname 
+    def __init__(self, ds):
+        self.UID = ds.StudyInstanceUID
+        self.patid = ds.PatientID
+        self.stddate = ds.StudyDate
+        self.stddesc = ds.StudyDescription
+        self.stdid = ds.StudyID
+        self.refphysname = ds.ReferringPhysicianName
+        self.data = ds
         Study.studies[self.UID] = self
 
-    @classmethod        
-    def from_ds(cls, ds):
-        Study(ds.StudyInstanceUID, ds.PatientID, ds.StudyDate, ds.StudyDescription, ds.StudyID, ds.ReferringPhysicianName)
         
     def toTreeView(self):
         return [self.UID, self.patid, menu.toISOdate(self.stddate), self.stddesc]
@@ -39,7 +37,9 @@ class StudyWorker(QThread):
         self.ds.ReferringPhysicianName = ""
         self.ds.StudyInstanceUID = ""
         self.ds.StudyDate = ''
-        self.ds.Modality = ''
+        self.ds.StudyTime = ''
+        self.ds.InstitutionName = ''
+        
     
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
@@ -48,7 +48,7 @@ class StudyWorker(QThread):
             if i[1]:
                 elem = i[1]
                 res = elem.PatientID
-                Study.from_ds(elem)
+                Study(elem)
         self.rebound.emit(res)
         self.stop()
     

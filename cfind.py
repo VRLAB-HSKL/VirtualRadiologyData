@@ -11,12 +11,6 @@ def cfind(server, ds):
     ae.add_requested_context(PatientRootQueryRetrieveInformationModelFind)
 
     # Create our Identifier (query) dataset
-    
-    ds.SeriesInstanceUID = ''
-    ds.SeriesDate = ''
-    ds.SeriesTime = ''
-    ds.SeriesDescription = ''
-    ds.BodyPartExamined = ''
 
     # Associate with the peer AE at IP 127.0.0.1 and port 11112
     assoc = ae.associate(server, 4242)

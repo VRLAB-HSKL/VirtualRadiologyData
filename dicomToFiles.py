@@ -1,30 +1,32 @@
 import numpy as np
-import image
+import image, series
 
 
-def convert(imglist, path=None, name=None):
+def convert(seruid, path=None, name=None):
+    
+    
     if path is None:
-        path = ""
+        path = ".\\"
     else:
         path = f"{path}\\"
     form = 'uint8'
         
     
     
+    imglist = image.Image.images[seruid].imglist
     ds = imglist[0]
-    
+     
     ds.InstitutionAddress = ds.InstitutionAddress if ("InstitutionAddress" in ds) else 'Unknown'
     if not name:
-        name = "" + str(ds.PatientName) + ds.SeriesDescription.replace(" ", "")
+        name = series.Series.serieses[ds.SeriesInstanceUID].getFilename()
        
     cube = image.Image.images[ds.SeriesInstanceUID].volume
     cube = cube.astype("uint8")
     cube = cube[::-1, :, ::-1]
     #cube = cube[:, 150:350, 100:370]
-    cube.astype(form).tofile(f"{path}\\{name}.raw")
+    cube.astype(form).tofile(f"{path}{name}.raw")
     
     
-    print(f"{cube.shape[2]}")
     string = f"{ds.PatientName}\n"\
             + f"{ds.PatientID}\n"\
             + f"{ds.PatientBirthDate}\n"\

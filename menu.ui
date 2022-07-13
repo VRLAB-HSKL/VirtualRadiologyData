@@ -18,6 +18,12 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTreeWidget" name="patienttree">
+       <property name="minimumSize">
+        <size>
+         <width>330</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="columnCount">
         <number>4</number>
        </property>
@@ -73,7 +79,7 @@
      <item>
       <widget class="QTreeWidget" name="seriestree">
        <property name="columnCount">
-        <number>3</number>
+        <number>4</number>
        </property>
        <column>
         <property name="text">
@@ -90,6 +96,11 @@
          <string notr="true">3</string>
         </property>
        </column>
+       <column>
+        <property name="text">
+         <string notr="true">4</string>
+        </property>
+       </column>
       </widget>
      </item>
     </layout>
@@ -104,8 +115,17 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>600</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
        </property>
       </widget>
      </item>

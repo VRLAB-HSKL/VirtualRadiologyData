@@ -68,9 +68,7 @@ def c_get(server, seriesid):
         # Use the C-GET service to send the identifier
         responses = assoc.send_c_get(ds, PatientRootQueryRetrieveInformationModelGet)
         for (status, identifier) in responses:
-            if status:
-                print('C-GET query status: 0x{0:04x}'.format(status.Status))
-            else:
+            if not status:
                 print('Connection timed out, was aborted or received invalid response')
 
                 # Release the association

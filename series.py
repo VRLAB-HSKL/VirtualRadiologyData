@@ -1,4 +1,4 @@
-import cfind, datetime, menu
+import cfind, datetime, menu, study, patient
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -6,21 +6,23 @@ class Series():
     
     serieses = {}
     
-    def __init__(self, uid, stduid, serdate, serdesc, modality):
-        self.UID = uid
-        self.stduid = stduid
-        self.serdate = serdate
-        self.serdesc = serdesc
-        self.modality = modality
+    def __init__(self, ds):
+        self.UID = ds.SeriesInstanceUID
+        self.stduid = ds.StudyInstanceUID
+        self.serdate = ds.SeriesDate
+        self.serdesc = ds.SeriesDescription
+        self.modality = ds.Modality
+        self.data = ds
         Series.serieses[self.UID] = self
 
-    @classmethod        
-    def from_ds(cls, ds):
-        Series(ds.SeriesInstanceUID, ds.StudyInstanceUID, ds.SeriesDate, ds.SeriesDescription, ds.Modality)
-
     def toTreeView(self):
-        return [self.UID, self.serdesc, menu.toISOdate(self.serdate)]    
+        return [self.UID, self.modality, self.serdesc, menu.toISOdate(self.serdate)]    
 
+    def getFilename(self):
+        std = study.Study.studies[self.stduid]
+        pat = patient.Patient.patients[std.patid]
+        return f"{pat.patname}{self.serdesc}"
+        
 class SeriesWorker(QThread):
     rebound = pyqtSignal(str)
     
@@ -35,6 +37,8 @@ class SeriesWorker(QThread):
         self.ds.SeriesDate = ""
         self.ds.SeriesDescription = ""
         self.ds.Modality = ''
+        self.ds.InstitutionName = ''
+        self.ds.InstitutionAddress = ''
     
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
@@ -43,7 +47,7 @@ class SeriesWorker(QThread):
             if i[1]:
                 elem = i[1]
                 res = elem.StudyInstanceUID
-                Series.from_ds(elem)
+                Series(elem)
         self.rebound.emit(res)
         self.stop()
     

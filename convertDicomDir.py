@@ -3,6 +3,7 @@ import pydicom
 import numpy as np
 from os import listdir
 from os.path import isfile, join
+import image
 
 import dicomToFiles
 
@@ -18,6 +19,7 @@ def loadFieles(instanceList, path):
 def imagelist(path):
     instanceList = []
     loadFieles(instanceList, path)
+    instanceList.sort(key=lambda i: i.ImagePositionPatient[2], reverse=True)
     return instanceList
 
 def main(argv):
@@ -40,7 +42,9 @@ def main(argv):
             path = arg
 
     imglist = imagelist(path)
-    dicomToFiles.convert(imglist, name=name)
+    seruid = imglist[0].SeriesInstanceUID
+    image.Image(seruid, imglist)
+    dicomToFiles.convert(seruid, name=name)
 
 if __name__ == "__main__":
    main(sys.argv[1:])

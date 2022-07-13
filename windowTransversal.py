@@ -10,13 +10,13 @@ import fenster
 
 
 class WindowTransversal(QDialog):
-    def __init__(self, imglist):
+    def __init__(self, img):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "bilder.ui"), self)
         self.setWindowTitle('Transversalebene')
         '''Attribute'''
         self.fenster = fenster.Fenster(self)
-        self.bildDaten = bildDaten.BildDaten(self.fenster, imglist)
+        self.bildDaten = bildDaten.BildDaten(self.fenster, img)
 
         self.get_image()
         self.label.installEventFilter(self)

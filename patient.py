@@ -6,23 +6,20 @@ class Patient():
     
     patients = {}
     
-    def __init__(self, patid, patname="Unknown", patsex="Unknown", patbirthdate="Unknown"):
-        self.id = patid
-        self.patname = patname
-        self.patsex = patsex
-        self.patbirthdate = patbirthdate
+    def __init__(self, ds):
+        self.id = ds.PatientID
+        self.patname = str(ds.PatientName)
+        self.patsex = ds.PatientSex
+        self.patbirthdate = ds.PatientBirthDate
+        self.data = ds
         Patient.patients[self.id] = self
-
-    @classmethod        
-    def from_ds(cls, ds):
-        Patient(ds.PatientID, str(ds.PatientName), ds.PatientSex, ds.PatientBirthDate)
         
     def toTreeView(self):
         return [self.id, self.patname, self.patsex, menu.toISOdate(self.patbirthdate)]
 
     
 class PatientWorker(QThread):
-    rebound = pyqtSignal(dict)
+    rebound = pyqtSignal(str)
     
     def __init__(self, server, parent=None):
         QThread.__init__(self, parent)
@@ -38,11 +35,11 @@ class PatientWorker(QThread):
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
         data = cfind.cfind(self.server, self.ds)
-        res = {}
         for i in data:
             if i[1]:
                 elem = i[1]
-                res[elem.PatientID] = Patient.from_ds(elem)
+                res = elem.PatientID
+                Patient(elem)
         self.rebound.emit(res)
         self.stop()
     

@@ -8,7 +8,7 @@ class Image():
     images = {}
     
     def __init__(self, seruid, imglist):
-        self.volume, self.pLow, pHigh = createVolume(imglist)
+        self.volume, self.pLow, self.pHigh = createVolume(imglist)
         self.imglist = imglist
         Image.images[seruid] = self
         
