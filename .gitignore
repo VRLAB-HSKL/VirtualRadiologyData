@@ -6,4 +6,5 @@ __pychache__/
 *.ini
 *.raw
 *.txt
-
+post-processing/output.*
+!requirements.txt
