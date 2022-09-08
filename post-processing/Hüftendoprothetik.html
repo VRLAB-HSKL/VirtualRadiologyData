@@ -54,17 +54,18 @@
 
   </head>
   <body>
+  <form method="post" action="http://127.0.0.1:8000">
     <section id="sec_clinical_information" data-section-name="Klinische Angaben" data-section-required="true">
       <header class="level1" data-english="Clinical information">Klinische Angaben</header>
       <p>
-       <textarea name="clinical_information" id="clinical_information" data-field-type="TEXTAREA"></textarea>
+       <textarea name="clinical_information" id="clinical_information" data-field-type="TEXTAREA" required></textarea>
       </p>
     </section>
 
     <section id="sec_clinical_question" data-section-name="Klinische Fragestellung" data-section-required="true">
       <header class="level1" data-english="Clinical question">Klinische Fragestellung</header>
       <p>
-        <textarea name="clinical_question" data-field-type="TEXTAREA"></textarea>
+        <textarea name="clinical_question" data-field-type="TEXTAREA" required></textarea>
       </p>
     </section>
 
@@ -74,8 +75,9 @@
         <tbody><tr>
           <th><label for="image_quality">Bildqualität:</label></th>
           <td>
-            <select name="image_quality" id="image_quality">
-              <option value="gut" selected="selected">gut</option>
+            <select name="image_quality" id="image_quality" required>
+              <option value="">-</option>
+              <option value="gut">gut</option>
               <option value="ausreichend">ausreichend</option>
               <option value="eingeschränkt">eingeschränkt</option>
             </select>
@@ -85,8 +87,9 @@
         <tr>
           <th><label id="side" ,="" data-section-name="side" data-section-required="true">Beurteiltes Hüftgelenk:</label></th>
           <td>
-            <select name="side" id="side">
-              <option value="rechts" selected="selected">rechts</option>
+            <select name="side" id="side" required>
+              <option value="">-</option>
+              <option value="rechts">rechts</option>
               <option value="links">links</option>
             </select>
           </td>
@@ -96,8 +99,8 @@
         <tbody><tr>
           <th><label for="joint_position">Gelenkstellung:</label></th>
           <td>
-            <select name="joint_position" id="joint_position">
-              <option value="—" selected="selected">—</option>
+            <select name="joint_position" id="joint_position" required>
+              <option value="">-</option>
               <option value="regelrecht">regelrecht</option>
               <option value="gering inkongruent (varisch)">gering inkongruent (varisch)</option>
               <option value="mittelgradig inkongruent (varisch)">mittelgradig inkongruent (varisch)</option>
@@ -109,8 +112,8 @@
         <tr>
           <th><label for="subchondral_sclerosis">Subchondrale Sklerosierung:</label></th>
           <td>
-            <select name="subchondral_sclerosis" id="subchondral_sclerosis">
-              <option value="—" selected="selected">—</option>
+            <select name="subchondral_sclerosis" id="subchondral_sclerosis" required>
+              <option value="">-</option>
               <option value="keine">keine</option>
               <option value="gering">gering</option>
               <option value="mittelgradig">mittelgradig</option>
@@ -122,8 +125,8 @@
         <tr>
           <th><label for="articular_osteophytes">Artikuläre Osteophyten:</label></th>
           <td>
-            <select name="articular_osteophytes" id="articular_osteophytes">
-              <option value="—" selected="selected">—</option>
+            <select name="articular_osteophytes" id="articular_osteophytes" required>
+              <option value="">-</option>
               <option value="keine">keine</option>
               <option value="gering">gering</option>
               <option value="mittelgradig">mittelgradig</option>
@@ -135,8 +138,8 @@
         <tr>
           <th><label for="joint_partner_deformation">Deformierungen der Gelenkpartner:</label></th>
           <td>
-            <select name="joint_partner_deformation" id="joint_partner_deformation">
-              <option value="—" selected="selected">—</option>
+            <select name="joint_partner_deformation" id="joint_partner_deformation" required>
+              <option value="">-</option>
               <option value="keine">keine</option>
               <option value="gering">gering</option>
               <option value="mittelgradig">mittelgradig</option>
@@ -148,8 +151,8 @@
         <tr>
           <th><label for="spongiosa_cystic_deformation">Spongiosa (zystische Deformierungen in Gelenkpfanne und Hüftkopf):</label></th>
           <td>
-            <select name="spongiosa_cystic_deformation" id="spongiosa_cystic_deformation">
-              <option value="—" selected="selected">—</option>
+            <select name="spongiosa_cystic_deformation" id="spongiosa_cystic_deformation" required>
+              <option value="">-</option>
               <option value="keine">keine</option>
               <option value="gering">gering</option>
               <option value="mittelgradig">mittelgradig</option>
@@ -161,8 +164,8 @@
         <tr>
           <th><label for="pelvis_dysplasia">Beckenarchitektur (Dysplasien):</label></th>
           <td>
-            <select name="pelvis_dysplasia" id="pelvis_dysplasia">
-              <option value="—" selected="selected">—</option>
+            <select name="pelvis_dysplasia" id="pelvis_dysplasia" required>
+              <option value="">-</option>
               <option value="nein">nein</option>
               <option value="ja">ja</option>
             </select>
@@ -172,8 +175,8 @@
         <tr>
           <th><label for="paraarticular_tissue_calcification">Paraartikuläre Weichteile (Kalzifikationen):</label></th>
           <td>
-            <select name="paraarticular_tissue_calcification" id="paraarticular_tissue_calcification">
-              <option value="—" selected="selected">—</option>
+            <select name="paraarticular_tissue_calcification" id="paraarticular_tissue_calcification" required>
+              <option value="">-</option>
               <option value="keine">keine</option>
               <option value="vereinzelt">vereinzelt</option>
               <option value="ankylosierend">ankylosierend</option>
@@ -194,8 +197,8 @@
         <tbody><tr>
           <th><label for="coxarthrosis">Coxarthrose:</label></th>
           <td>
-            <select name="coxarthrosis" id="coxarthrosis">
-              <option value="—" selected="selected">—</option>
+            <select name="coxarthrosis" id="coxarthrosis" required>
+              <option value="">-</option>
               <option value="keine">keine</option>
               <option value="dysplastisch">dysplastisch</option>
               <option value="degenerativ">degenerativ</option>
@@ -206,8 +209,8 @@
         <tr>
           <th><label for="kellgren_score" title="in der Modifikation nach Braunschweig">Kellgren-Score:</label></th>
           <td>
-            <select name="kellgren_score" id="kellgren_score">
-              <option value="—" selected="selected">—</option>
+            <select name="kellgren_score" id="kellgren_score" required>
+              <option value="">-</option>
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -222,186 +225,5 @@
         </tr>
       </tbody></table>
     </section>
-  
-
-<script>
-(function() {
-  var ws = new WebSocket('ws://' + window.location.host + 
-             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
-             'referrer=' + encodeURIComponent(window.location.pathname));
-  ws.onmessage = function (msg) {
-      if (msg.data === 'reload') {
-          window.location.reload();
-      }
-      if (msg.data.startsWith('update-css ')) {
-          var messageId = msg.data.substring(11);
-          var links = document.getElementsByTagName('link');
-          for (var i = 0; i < links.length; i++) {
-              var link = links[i];
-              if (link.rel !== 'stylesheet') continue;
-              var clonedLink = link.cloneNode(true);
-              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
-              if (newHref !== link.href) {
-                clonedLink.href = newHref;
-              }
-              else {
-                var indexOfQuest = newHref.indexOf('?');
-                if (indexOfQuest >= 0) {
-                  // to support ?foo#hash 
-                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' + 
-                                    newHref.substring(indexOfQuest + 1);
-                }
-                else {
-                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
-                }
-              }
-              link.replaceWith(clonedLink);
-          }
-      }
-  };
-})();
-</script><script>
-(function() {
-  var ws = new WebSocket('ws://' + window.location.host + 
-             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
-             'referrer=' + encodeURIComponent(window.location.pathname));
-  ws.onmessage = function (msg) {
-      if (msg.data === 'reload') {
-          window.location.reload();
-      }
-      if (msg.data.startsWith('update-css ')) {
-          var messageId = msg.data.substring(11);
-          var links = document.getElementsByTagName('link');
-          for (var i = 0; i < links.length; i++) {
-              var link = links[i];
-              if (link.rel !== 'stylesheet') continue;
-              var clonedLink = link.cloneNode(true);
-              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
-              if (newHref !== link.href) {
-                clonedLink.href = newHref;
-              }
-              else {
-                var indexOfQuest = newHref.indexOf('?');
-                if (indexOfQuest >= 0) {
-                  // to support ?foo#hash 
-                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' + 
-                                    newHref.substring(indexOfQuest + 1);
-                }
-                else {
-                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
-                }
-              }
-              link.replaceWith(clonedLink);
-          }
-      }
-  };
-})();
-</script><script>
-(function() {
-  var ws = new WebSocket('ws://' + window.location.host + 
-             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
-             'referrer=' + encodeURIComponent(window.location.pathname));
-  ws.onmessage = function (msg) {
-      if (msg.data === 'reload') {
-          window.location.reload();
-      }
-      if (msg.data.startsWith('update-css ')) {
-          var messageId = msg.data.substring(11);
-          var links = document.getElementsByTagName('link');
-          for (var i = 0; i < links.length; i++) {
-              var link = links[i];
-              if (link.rel !== 'stylesheet') continue;
-              var clonedLink = link.cloneNode(true);
-              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
-              if (newHref !== link.href) {
-                clonedLink.href = newHref;
-              }
-              else {
-                var indexOfQuest = newHref.indexOf('?');
-                if (indexOfQuest >= 0) {
-                  // to support ?foo#hash 
-                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' + 
-                                    newHref.substring(indexOfQuest + 1);
-                }
-                else {
-                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
-                }
-              }
-              link.replaceWith(clonedLink);
-          }
-      }
-  };
-})();
-</script><script>
-(function() {
-  var ws = new WebSocket('ws://' + window.location.host + 
-             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
-             'referrer=' + encodeURIComponent(window.location.pathname));
-  ws.onmessage = function (msg) {
-      if (msg.data === 'reload') {
-          window.location.reload();
-      }
-      if (msg.data.startsWith('update-css ')) {
-          var messageId = msg.data.substring(11);
-          var links = document.getElementsByTagName('link');
-          for (var i = 0; i < links.length; i++) {
-              var link = links[i];
-              if (link.rel !== 'stylesheet') continue;
-              var clonedLink = link.cloneNode(true);
-              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
-              if (newHref !== link.href) {
-                clonedLink.href = newHref;
-              }
-              else {
-                var indexOfQuest = newHref.indexOf('?');
-                if (indexOfQuest >= 0) {
-                  // to support ?foo#hash 
-                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' + 
-                                    newHref.substring(indexOfQuest + 1);
-                }
-                else {
-                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
-                }
-              }
-              link.replaceWith(clonedLink);
-          }
-      }
-  };
-})();
-</script><script>
-(function() {
-  var ws = new WebSocket('ws://' + window.location.host + 
-             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
-             'referrer=' + encodeURIComponent(window.location.pathname));
-  ws.onmessage = function (msg) {
-      if (msg.data === 'reload') {
-          window.location.reload();
-      }
-      if (msg.data.startsWith('update-css ')) {
-          var messageId = msg.data.substring(11);
-          var links = document.getElementsByTagName('link');
-          for (var i = 0; i < links.length; i++) {
-              var link = links[i];
-              if (link.rel !== 'stylesheet') continue;
-              var clonedLink = link.cloneNode(true);
-              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
-              if (newHref !== link.href) {
-                clonedLink.href = newHref;
-              }
-              else {
-                var indexOfQuest = newHref.indexOf('?');
-                if (indexOfQuest >= 0) {
-                  // to support ?foo#hash 
-                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' + 
-                                    newHref.substring(indexOfQuest + 1);
-                }
-                else {
-                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
-                }
-              }
-              link.replaceWith(clonedLink);
-          }
-      }
-  };
-})();
-</script></body></html>
+  <button name="fulltext" value="1">Submit</button>
+</form></body></html>

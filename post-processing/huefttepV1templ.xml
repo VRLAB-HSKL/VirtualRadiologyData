@@ -259,7 +259,7 @@
                 <scheme>
                   <designator>SCT</designator>
                 </scheme>
-                <meaning>{pelvis_dysplasia_select}</meaning>
+                <meaning>{pelvis_dysplasia}</meaning>
               </code>
               <text>
                 <relationship>CONTAINS</relationship>
