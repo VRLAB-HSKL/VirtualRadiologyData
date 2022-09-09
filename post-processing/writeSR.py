@@ -3,7 +3,7 @@ import readHTML, sendSR, extractCID
 
 def writeSR(values):
     codes = extractCID.getcodes()
-    with open("huefttepV1templ.xml", 'r') as sr:
+    with open("output.xml", 'r') as sr:
         txt = sr.read()
     codeliste = re.findall('([\t| ]*){code\|(\d.*)\|(.*)}', txt)
     zuweisung = {}

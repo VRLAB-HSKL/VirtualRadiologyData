@@ -6,18 +6,27 @@ import socketserver
 import webbrowser
 import threading
 import writeSR
+import re
 
-def weiter(values):
-    values['PatientID'] = "000-000-002"
-    values['PatientName'] = "Adam"
-    values['PatientSex'] = "M"
-    values['StudyDescription'] = "Visible Human Male"
-    values['SeriesDescription'] = "Hip"
-    values['InstanceCreationDate'] = "20050726"
-    values['InstanceCreationTime'] = "102049"
-    values['Date'] = datetime.now().strftime('%Y-%m-%d')
-    values['Time'] = datetime.now().strftime('%H:%M:%S')
+def createSR(values):
 
+    imgdata = {}
+    imgdata['PatientID'] = "000-000-002"
+    imgdata['PatientName'] = "Adam"
+    imgdata['PatientSex'] = "M"
+    imgdata['StudyDescription'] = "Visible Human Male"
+    imgdata['SeriesDescription'] = "Hip"
+    imgdata['InstanceCreationDate'] = "20050726"
+    imgdata['InstanceCreationTime'] = "102049"
+    imgdata['Date'] = datetime.now().strftime('%Y-%m-%d')
+    imgdata['Time'] = datetime.now().strftime('%H:%M:%S')
+    with open("huefttepV1templ.xml", 'r') as sr:
+        txt = sr.read()
+    for k, v in imgdata.items():
+        pat = f"{{{k}}}"
+        txt = re.sub(pat, v, txt)
+    with open("output.xml", 'w') as out:
+        out.write(txt)
     for k, v in values.items():
         print(f"{k}: {v}")
     writeSR.writeSR(values)
@@ -39,8 +48,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
         values = {}
         for k, v in fields.items():
             values[k] = v[0] if v[0]!='' else '-'
-        print(values)
-        weiter(values)
+        createSR(values)
         self.path = 'output.html'
         httpd.shutdown()
         return http.server.SimpleHTTPRequestHandler.do_GET(self)
@@ -48,8 +56,9 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 handler = MyHttpRequestHandler
 addr = ("", 8000)
+socketserver.ThreadingTCPServer.allow_reuse_address = True
 httpd = socketserver.ThreadingTCPServer(addr, handler)
-webbrowser.open('http://127.0.0.1:8000', new=2, autoraise=True)
+webbrowser.open(f'http://127.0.0.1:{addr[1]}', new=2, autoraise=True)
 httpd.serve_forever()
 httpd.server_close()
 
