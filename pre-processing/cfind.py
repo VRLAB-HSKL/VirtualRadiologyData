@@ -17,17 +17,16 @@ def cfind(server, ds):
     if assoc.is_established:
         # Send the C-FIND request
         responses = assoc.send_c_find(ds, PatientRootQueryRetrieveInformationModelFind)
-        return responses
+        liste = []
 
-        """
         for (status, identifier) in responses:
             if status:
-                print('C-FIND query status: 0x{0:04X}'.format(status.Status))
-            else:
-                print('Connection timed out, was aborted or received invalid response')
-        """
+                if status.Status > 0:
+                    liste.append(identifier)
 
         # Release the association
         assoc.release()
+        return liste
+
     else:
         print('Association rejected, aborted or never connected')

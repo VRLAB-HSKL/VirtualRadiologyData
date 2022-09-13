@@ -1,7 +1,6 @@
-numpy==1.18.5
-opencv_python==4.6.0.66
-pydicom==2.3.0
-pynetdicom==2.0.2
-PyQt6==6.3.1
-scikit_image==0.16.2
-skimage==0.0
+numpy
+opencv-python
+pydicom
+pynetdicom
+PyQt6
+scikit-image

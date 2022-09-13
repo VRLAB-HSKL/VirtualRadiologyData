@@ -34,6 +34,7 @@ class ImageWorker(QThread):
         
     def run(self):
         imglist = cget.imagelist(self.server, self.seriesid)
+        print(imglist)
         seruid = imglist[0].SeriesInstanceUID
         Image(seruid, imglist)
         self.rebound.emit(seruid)

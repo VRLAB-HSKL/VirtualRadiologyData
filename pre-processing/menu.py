@@ -1,4 +1,6 @@
-from PyQt6.QtWidgets import QDialog, QTreeWidgetItem
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import QDialog, QTreeWidgetItem, QMenu
+from PyQt6.QtGui import QAction
 from PyQt6.uic import loadUi
 import os, sys, image, subprocess, tempfile, patient, threading, study, series, datetime, dicomToFiles, windowTransversal
 from pydicom import Dataset
@@ -35,13 +37,17 @@ class Menu(QDialog):
         self.seriestree.setHeaderLabels(["SeriesUID", "Modality", "SeriesDescription", "SeriesDate"])
         self.seriestree.itemDoubleClicked.connect(self.series_line_click_handler)
         self.seriestree.itemClicked.connect(self.series_line_singleclick_handler)
+        self.seriestree.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+        self.seriestree.customContextMenuRequested.connect(self.menuContextTree)
         '''Label Einstellungen'''
         #self.label.setText("Dies ist ein Test")
-        '''PushButton Einstellungen'''
+        '''Button Einstellungen'''
         self.schichtenBtn.setEnabled(False)
         self.schichtenBtn.clicked.connect(self.schichtenbtn_clicked)
         self.vrBtn.setEnabled(False)
         self.vrBtn.clicked.connect(self.vrBtn_clicked)
+        self.srBtn = QAction("SR erstellen")
+        self.srBtn.triggered.connect(self.createSR)
         '''Attribute'''
         self.role = 'patient'
         self.data = None
@@ -175,5 +181,19 @@ class Menu(QDialog):
             subprocess.Popen([r"C:\Users\RHoock\Desktop\VirtualRadiologyBuild\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", f"{series.Series.serieses[self.id].getFilename()}"])
         else:
             self.vrBtn.setText("keine Serie ausgewählt!")
-        
 
+    def menuContextTree(self, point):
+        index = self.seriestree.indexAt(point)
+
+        if not index.isValid():
+            return
+
+        item = self.seriestree.itemAt(point)
+        self.id = item.text(0)
+        self.series_line_singleclick_handler()
+        menu = QMenu()
+        action = menu.addAction(self.srBtn)
+        menu.exec(self.seriestree.mapToGlobal(point))
+
+    def createSR(self, s):
+        print("Hi", s)

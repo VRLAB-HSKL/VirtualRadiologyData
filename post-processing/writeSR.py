@@ -34,7 +34,6 @@ def writeSR(values):
 
     for k, v in values.items():
         pat = "{"+k+"}"
-        print(f"{pat}: {v}")
         txt = re.sub(pat, v, txt)
     with open("output.xml", 'w') as out:
         out.write(txt)

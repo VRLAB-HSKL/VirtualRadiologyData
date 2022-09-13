@@ -61,6 +61,7 @@ def c_get(server, seriesid):
     ds.StudyInstanceUID = ''
     # Unique key for SERIES level
     ds.SeriesInstanceUID = seriesid
+    print(ds)
     # Associate with peer AE at IP 127.0.0.1 and port 4242
     assoc = ae.associate(server, 4242, ext_neg=[role], evt_handlers=handlers)
 
@@ -72,7 +73,7 @@ def c_get(server, seriesid):
                 print('Connection timed out, was aborted or received invalid response')
 
                 # Release the association
-                assoc.release()
+        assoc.release()
     else:
         print('Association rejected, aborted or never connected')
 

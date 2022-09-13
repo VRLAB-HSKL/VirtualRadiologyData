@@ -43,11 +43,9 @@ class SeriesWorker(QThread):
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
         data = cfind.cfind(self.server, self.ds)
-        for i in data:
-            if i[1]:
-                elem = i[1]
-                res = elem.StudyInstanceUID
-                Series(elem)
+        for elem in data:
+            res = elem.StudyInstanceUID
+            Series(elem)
         self.rebound.emit(res)
         self.stop()
     
