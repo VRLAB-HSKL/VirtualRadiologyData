@@ -2,19 +2,12 @@ from PyQt6 import QtCore
 from PyQt6.QtWidgets import QDialog, QTreeWidgetItem, QMenu
 from PyQt6.QtGui import QAction
 from PyQt6.uic import loadUi
-import os, sys, image, subprocess, tempfile, patient, threading, study, series, datetime, dicomToFiles, windowTransversal
+import os, sys, subprocess, tempfile, threading, datetime, re
 from pydicom import Dataset
 import copy
+from postprocessing import srmain
+from preprocessing import patient, study, series, image, dicomToFiles, windowTransversal
 
-def toISOdate(dcmdate):
-    date = str(dcmdate)
-    if len(date) == 8:
-        date = [date[0:4], date[4:6], date[6:8]]
-        date = datetime.date(int(date[0]), int(date[1]), int(date[2]))
-        date = date.strftime("%Y-%m-%d")
-    else:
-        date = "Unkown"
-    return date
 
 class Menu(QDialog):
     def __init__(self):
@@ -170,6 +163,10 @@ class Menu(QDialog):
         for k, v in ser.data.items():
             self.data.add_new(k, v.VR, v.value)
         self.label.setText(f"{self.data}")
+        if str(self.data['SeriesInstanceUID'].value) in image.Image.images:
+            self.schichtenBtn.setEnabled(True)
+        else:
+            self.schichtenBtn.setEnabled(False)
            
     def schichtenbtn_clicked(self):
         if ("SeriesInstanceUID" in self.data):
@@ -196,4 +193,21 @@ class Menu(QDialog):
         menu.exec(self.seriestree.mapToGlobal(point))
 
     def createSR(self, s):
-        print("Hi", s)
+        imgdata = {}
+        imgdata['PatientID'] = str(self.data['PatientID'].value)
+        imgdata['PatientName'] = str(self.data['PatientName'].value)
+        imgdata['PatientSex'] = str(self.data['PatientSex'].value)
+        imgdata['StudyDescription'] = str(self.data['StudyDescription'].value)
+        imgdata['SeriesDescription'] = str(self.data['SeriesDescription'].value)
+        imgdata['InstanceCreationDate'] = "20050726"
+        imgdata['InstanceCreationTime'] = "102049"
+        imgdata['Date'] = datetime.datetime.now().strftime('%Y-%m-%d')
+        imgdata['Time'] = datetime.datetime.now().strftime('%H:%M:%S')
+        with open("./template/huefttepV1templ.xml", 'r') as sr:
+            txt = sr.read()
+        for k, v in imgdata.items():
+            pat = f"{{{k}}}"
+            txt = re.sub(pat, v, txt)
+        with open("./output/output.xml", 'w') as out:
+            out.write(txt)
+        srmain.main()

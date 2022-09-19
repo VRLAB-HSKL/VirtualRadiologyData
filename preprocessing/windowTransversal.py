@@ -5,14 +5,13 @@ from PyQt6.uic import loadUi
 import sys
 import os
 import cv2
-import bildDaten
-import fenster
+from preprocessing import bildDaten, fenster
 
 
 class WindowTransversal(QDialog):
     def __init__(self, img):
         super().__init__()
-        loadUi(os.path.join(sys.path[0], "bilder.ui"), self)
+        loadUi("./preprocessing/bilder.ui", self)
         self.setWindowTitle('Transversalebene')
         '''Attribute'''
         self.fenster = fenster.Fenster(self)

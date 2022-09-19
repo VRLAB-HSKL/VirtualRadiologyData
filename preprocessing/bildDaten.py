@@ -1,7 +1,6 @@
 import numpy as np
 import skimage.exposure as se
-import windowFrontal
-import windowSagittal
+from preprocessing import windowFrontal, windowSagittal
 
 
 class BildDaten(object):

@@ -1,7 +1,7 @@
 import skimage.exposure as se
 import numpy as np
 from PyQt6.QtCore import QThread, pyqtSignal
-import cget
+from preprocessing import cget
 
 class Image():
     

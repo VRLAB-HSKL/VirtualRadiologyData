@@ -1,5 +1,5 @@
 import numpy as np
-import image, series
+from preprocessing import image, series
 
 
 def convert(seruid, path=None, name=None):

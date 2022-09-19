@@ -3,13 +3,13 @@ from PyQt6.uic import loadUi
 import sys
 import os
 import cv2
-import fenster
+from preprocessing import fenster
 
 
 class WindowFrontal(QDialog):
     def __init__(self, fenster, bild_daten):
         super().__init__()
-        loadUi(os.path.join(sys.path[0], "bilder.ui"), self)
+        loadUi("./preprocessing/bilder.ui", self)
         self.setWindowTitle('Frontalebene')
         '''Attribute'''
         self.fenster = fenster

@@ -1,6 +1,7 @@
-import cfind, datetime, menu, study, patient
+import datetime
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
+from preprocessing import cfind, study, patient
 
 class Series():
     
@@ -16,7 +17,7 @@ class Series():
         Series.serieses[self.UID] = self
 
     def toTreeView(self):
-        return [self.UID, self.modality, self.serdesc, menu.toISOdate(self.serdate)]    
+        return [self.UID, self.modality, self.serdesc, patient.toISOdate(self.serdate)]
 
     def getFilename(self):
         std = study.Study.studies[self.stduid]

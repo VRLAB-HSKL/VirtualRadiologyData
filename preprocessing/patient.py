@@ -1,6 +1,18 @@
-import cfind, datetime, threading, time, menu
+import datetime, threading, time
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
+from preprocessing import cfind
+
+def toISOdate(dcmdate):
+    date = str(dcmdate)
+    if len(date) == 8:
+        date = [date[0:4], date[4:6], date[6:8]]
+        date = datetime.date(int(date[0]), int(date[1]), int(date[2]))
+        date = date.strftime("%Y-%m-%d")
+    else:
+        date = "Unkown"
+    return date
+
 
 class Patient():
     
@@ -15,7 +27,7 @@ class Patient():
         Patient.patients[self.id] = self
         
     def toTreeView(self):
-        return [self.id, self.patname, self.patsex, menu.toISOdate(self.patbirthdate)]
+        return [self.id, self.patname, self.patsex, toISOdate(self.patbirthdate)]
 
     
 class PatientWorker(QThread):

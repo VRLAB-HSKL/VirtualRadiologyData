@@ -1,9 +1,9 @@
 import re, os, pydicom
-import readHTML, sendSR, extractCID
+from postprocessing import sendSR, extractCID
 
 def writeSR(values):
     codes = extractCID.getcodes()
-    with open("output.xml", 'r') as sr:
+    with open("./output/output.xml", 'r') as sr:
         txt = sr.read()
     codeliste = re.findall('([\t| ]*){code\|(\d.*)\|(.*)}', txt)
     zuweisung = {}
@@ -35,11 +35,11 @@ def writeSR(values):
     for k, v in values.items():
         pat = "{"+k+"}"
         txt = re.sub(pat, v, txt)
-    with open("output.xml", 'w') as out:
+    with open("./output/output.xml", 'w') as out:
         out.write(txt)
-    os.system("xml2dsr output.xml output.dcm")
-    with pydicom.dcmread("output.dcm") as ds:
+    os.system("xml2dsr ./output/output.xml ./output/output.dcm")
+    with pydicom.dcmread("./output/output.dcm") as ds:
         #print(ds)
         pass
-    os.system("dsr2html +U8 output.dcm output.html")
+    os.system("dsr2html +U8 ./output/output.dcm ./output/output.html")
     #sendSR.sendSR(ds)

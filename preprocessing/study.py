@@ -1,7 +1,7 @@
-import cfind, datetime
+import datetime
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
-import menu
+from preprocessing import cfind, patient
 
 class Study():
     
@@ -19,7 +19,7 @@ class Study():
 
         
     def toTreeView(self):
-        return [self.UID, self.patid, menu.toISOdate(self.stddate), self.stddesc]
+        return [self.UID, self.patid, patient.toISOdate(self.stddate), self.stddesc]
 
     
 class StudyWorker(QThread):
