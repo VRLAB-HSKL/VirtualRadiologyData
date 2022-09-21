@@ -17,7 +17,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == '/':
-            self.path = './template/Hüftendoprothetik/Hüftendoprothetik.html'
+            self.path = f'./template/{config.fname}/{config.fname}.html'
         return http.server.SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):

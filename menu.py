@@ -40,6 +40,7 @@ class Menu(QDialog):
         self.schichtenBtn.clicked.connect(self.schichtenbtn_clicked)
         self.vrBtn.setEnabled(False)
         self.vrBtn.clicked.connect(self.vrBtn_clicked)
+        self.srBtns = []
         self.srBtn = QAction("Hüftendoprothetik")
         self.srBtn.triggered.connect(self.createSR)
         '''Attribute'''
@@ -47,9 +48,18 @@ class Menu(QDialog):
         self.data = None
         self.thread = None
         self.srThread = None
+        self.btnpressed = None
         self.id = None
         self.tempdir = tempfile.TemporaryDirectory()
         print(self.tempdir.name)
+        for root, dirnames, filenames in os.walk('./template'):
+            if dirnames:
+                for index, elem in enumerate(dirnames):
+                    action = QAction(elem)
+                    action.triggered.connect(lambda checked, index = index: self.createSR(index))
+                    self.srBtns.append(action)
+        #for btn in self.srBtns:
+         #   btn.triggered.connect(self.createSR)
         self.loadData()
         
     
@@ -192,11 +202,12 @@ class Menu(QDialog):
         self.series_line_singleclick_handler()
         menu = QMenu()
         submenu = QMenu("SR erstellen", self)
-        submenu.addAction(self.srBtn)
+        for btn in self.srBtns:
+            submenu.addAction(btn)
         menu.addMenu(submenu)
         menu.exec(self.seriestree.mapToGlobal(point))
 
-    def createSR(self, s):
+    def createSR(self, index):
         global httpd
         imgdata = {}
         imgdata['PatientID'] = str(self.data['PatientID'].value)
@@ -208,7 +219,8 @@ class Menu(QDialog):
         imgdata['InstanceCreationTime'] = "102049"
         imgdata['Date'] = datetime.datetime.now().strftime('%Y-%m-%d')
         imgdata['Time'] = datetime.datetime.now().strftime('%H:%M:%S')
-        with open("./template/Hüftendoprothetik/huefttepV1templ.xml", 'r') as sr:
+        config.fname = self.srBtns[index].text()
+        with open(f"./template/{config.fname}/{config.fname}.xml", 'r') as sr:
             txt = sr.read()
         for k, v in imgdata.items():
             pat = f"{{{k}}}"
