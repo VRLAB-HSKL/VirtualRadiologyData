@@ -4,8 +4,9 @@ from PyQt6.QtGui import QAction
 from PyQt6.uic import loadUi
 import os, sys, subprocess, tempfile, threading, datetime, re
 from pydicom import Dataset
+from threading import Thread
 import copy
-from postprocessing import srmain
+from postprocessing import srmain, config
 from preprocessing import patient, study, series, image, dicomToFiles, windowTransversal
 
 
@@ -13,7 +14,7 @@ class Menu(QDialog):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "menu.ui"), self)
-        self.server = "10.0.27.2"
+        self.server = "127.0.0.1" #10.0.27.2"
         '''Study TreeWidget Einstellungen'''
         self.patienttree.hideColumn(0)
         self.patienttree.setAlternatingRowColors(True)
@@ -39,12 +40,13 @@ class Menu(QDialog):
         self.schichtenBtn.clicked.connect(self.schichtenbtn_clicked)
         self.vrBtn.setEnabled(False)
         self.vrBtn.clicked.connect(self.vrBtn_clicked)
-        self.srBtn = QAction("SR erstellen")
+        self.srBtn = QAction("Hüftendoprothetik")
         self.srBtn.triggered.connect(self.createSR)
         '''Attribute'''
         self.role = 'patient'
         self.data = None
         self.thread = None
+        self.srThread = None
         self.id = None
         self.tempdir = tempfile.TemporaryDirectory()
         print(self.tempdir.name)
@@ -189,10 +191,13 @@ class Menu(QDialog):
         self.id = item.text(0)
         self.series_line_singleclick_handler()
         menu = QMenu()
-        action = menu.addAction(self.srBtn)
+        submenu = QMenu("SR erstellen", self)
+        submenu.addAction(self.srBtn)
+        menu.addMenu(submenu)
         menu.exec(self.seriestree.mapToGlobal(point))
 
     def createSR(self, s):
+        global httpd
         imgdata = {}
         imgdata['PatientID'] = str(self.data['PatientID'].value)
         imgdata['PatientName'] = str(self.data['PatientName'].value)
@@ -203,11 +208,14 @@ class Menu(QDialog):
         imgdata['InstanceCreationTime'] = "102049"
         imgdata['Date'] = datetime.datetime.now().strftime('%Y-%m-%d')
         imgdata['Time'] = datetime.datetime.now().strftime('%H:%M:%S')
-        with open("./template/huefttepV1templ.xml", 'r') as sr:
+        with open("./template/Hüftendoprothetik/huefttepV1templ.xml", 'r') as sr:
             txt = sr.read()
         for k, v in imgdata.items():
             pat = f"{{{k}}}"
             txt = re.sub(pat, v, txt)
         with open("./output/output.xml", 'w') as out:
             out.write(txt)
-        srmain.main()
+        if self.srThread is not None:
+            config.httpd.shutdown()
+        self.srThread = Thread(target=srmain.main)
+        self.srThread.start()
