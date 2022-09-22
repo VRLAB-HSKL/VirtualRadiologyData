@@ -41,7 +41,7 @@ def main():
     webbrowser.open(f'http://127.0.0.1:{addr[1]}', new=2, autoraise=True)
     config.httpd.serve_forever()
     config.httpd.server_close()
-    print("Server has shut down!")
+    print("Server has been shut down!")
 
 if __name__ == "__main__":
     main()

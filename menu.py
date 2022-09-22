@@ -5,6 +5,7 @@ from PyQt6.uic import loadUi
 import os, sys, subprocess, tempfile, threading, datetime, re
 from pydicom import Dataset
 from threading import Thread
+from pathlib import Path
 import copy
 from postprocessing import srmain, config
 from preprocessing import patient, study, series, image, dicomToFiles, windowTransversal
@@ -14,7 +15,7 @@ class Menu(QDialog):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "menu.ui"), self)
-        self.server = "127.0.0.1" #10.0.27.2"
+        self.server = "10.0.27.2"
         '''Study TreeWidget Einstellungen'''
         self.patienttree.hideColumn(0)
         self.patienttree.setAlternatingRowColors(True)
@@ -48,18 +49,17 @@ class Menu(QDialog):
         self.data = None
         self.thread = None
         self.srThread = None
-        self.btnpressed = None
-        self.id = None
-        self.tempdir = tempfile.TemporaryDirectory()
+        self.id = None #ID des zuletzt ausgewählten Eintrag (kann PatientID, StudyInstanceUID oder SeriesInstanceUID sein)
+        
+        self.tempdir = tempfile.TemporaryDirectory() #Anlegen eines temporären Ordners für die Bilddateien
         print(self.tempdir.name)
-        for root, dirnames, filenames in os.walk('./template'):
-            if dirnames:
-                for index, elem in enumerate(dirnames):
-                    action = QAction(elem)
-                    action.triggered.connect(lambda checked, index = index: self.createSR(index))
-                    self.srBtns.append(action)
-        #for btn in self.srBtns:
-         #   btn.triggered.connect(self.createSR)
+        for root, dirnames, filenames in os.walk('./template'):                                     #
+            if dirnames:                                                                            #Erstellen der Einträge 
+                for index, elem in enumerate(dirnames):                                             #im Context Menü, um
+                    action = QAction(elem)                                                          #SR Vorlagen auszuwählen
+                    action.triggered.connect(lambda checked, index = index: self.createSR(index))   #
+                    self.srBtns.append(action)                                                      #
+        Path('./output').mkdir(parents=True, exist_ok=True) #Erstellen eines Output-Ordners, falls nicht exitstent
         self.loadData()
         
     
