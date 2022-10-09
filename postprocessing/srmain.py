@@ -4,13 +4,15 @@ import socketserver
 import webbrowser
 import threading
 import re
-from postprocessing import writeSR, config
+if __name__ != "__main__":
+    from postprocessing import writeSR, config
 
 def createSR(values):
     if __name__=="__main__":
         for k, v in values.items():
             print(f"{k}: {v}")
-    writeSR.writeSR(values)
+    else:
+        writeSR.writeSR(values)
 
 
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -38,10 +40,12 @@ def main():
     addr = ("", 8000)
     socketserver.ThreadingTCPServer.allow_reuse_address = True
     config.httpd = socketserver.ThreadingTCPServer(addr, handler)
-    webbrowser.open(f'http://127.0.0.1:{addr[1]}', new=2, autoraise=True)
+    webbrowser.open(f'http://127.0.0.1:{addr[1]}', new=0, autoraise=True)
     config.httpd.serve_forever()
     config.httpd.server_close()
     print("Server has been shut down!")
 
 if __name__ == "__main__":
+    import config
+    config.fname = 'CT-Thorax_Covid-19'
     main()

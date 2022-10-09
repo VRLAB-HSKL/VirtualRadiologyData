@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report type="Comprehensive SR">
   <sopclass uid="1.2.840.10008.5.1.4.1.1.88.33">ComprehensivSRStorage</sopclass>
-  <charset>ISO_IR 100</charset>
+  <charset>ISO_IR 192</charset>
   <modality>SR</modality>
   <patient>
     <id>{PatientID}</id>
@@ -10,14 +10,14 @@
     </name>
     <sex>{PatientSex}</sex>
   </patient>
-  <study uid="1.2.826.0.1.3680043.2.1125.1.75064541463040.2005072610175534421">
+  <study uid="{StudyInstanceUID}">
     <description>{StudyDescription}</description>
   </study>
-  <series uid="1.2.826.0.1.3680043.8.498.69441391309738879770443522975602235476">
+  <series uid="{SeriesInstanceUID}">
     <number>1</number>
     <description>{SeriesDescription}</description>
   </series>
-  <instance uid="1.2.276.0.7230010.3.1.4.1787205428.166.1117461927.55">
+  <instance uid="{SOPInstanceUID}">
     <number>1</number>
     <creation uid="1.2.276.0.7230010.3.0.3.5.3">
       <date>{InstanceCreationDate}</date>
@@ -38,16 +38,16 @@
       <time>{Time}</time>
       <container flag="SEPARATE">
         <concept>
-          <value>R01</value>
+          <value>1</value>
           <scheme>
             <designator>99_HS-KL</designator>
           </scheme>
-          <meaning>Hüftendoprothese</meaning>
+          <meaning>CR Hüftendoprothetik</meaning>
         </concept>
         <container flag="SEPARATE">
           <relationship>CONTAINS</relationship>
           <concept>
-            <value>R01.01</value>
+            <value>101</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -56,11 +56,11 @@
           <text>
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>R01.01.01</value>
+              <value>clinical_information</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
-              <meaning>Klinische Angaben</meaning>
+              <meaning>Text: Klinische Angaben</meaning>
             </concept>
             <value>{clinical_information}</value>
           </text>
@@ -68,7 +68,7 @@
         <container flag="SEPARATE">
           <relationship>CONTAINS</relationship>
           <concept>
-            <value>R01.02</value>
+            <value>102</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -77,11 +77,11 @@
           <text>
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>R01.02.01</value>
+              <value>clinical_question</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
-              <meaning>Klinische Fragenstellunge</meaning>
+              <meaning>Text: Klinische Fragenstellunge</meaning>
             </concept>
             <value>{clinical_question}</value>
           </text>
@@ -89,7 +89,7 @@
         <container flag="SEPARATE">
           <relationship>CONTAINS</relationship>
           <concept>
-            <value>R01.03</value>
+            <value>103</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -98,21 +98,31 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>R01.03.01</value>
+              <value>10301</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
               <meaning>Bildqualität</meaning>
             </concept>
-            {code|111050|image_quality}
-            <text>
+            <code>
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.02</value>
+                <value>image_quality</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
-                <meaning>Bildqualität Text</meaning>
+                <meaning>Code: Bildqualität</meaning>
+              </concept>
+              {code|6044|image_quality}
+            </code>
+            <text>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>image_quality_comment</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Text: Bildqualität</meaning>
               </concept>
               <value>{image_quality_comment}</value>
             </text>
@@ -120,31 +130,51 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>R01.03.02</value>
+              <value>10302</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
               <meaning>Beurteiltes Hüftgelenk</meaning>
             </concept>
-            {code|272741003|side}
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>side</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: Beurteiltes Hüftgelenk</meaning>
+              </concept>
+              {code|247|side}
+            </code>
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.03</value>
+                <value>1030202</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
                 <meaning>Gelenkstellung</meaning>
               </concept>
-              {code|99_100|joint_position}
-              <text>
+              <code>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.03.02</value>
+                  <value>joint_position</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Gelenkstellung Text</meaning>
+                  <meaning>Code: Gelenkstellung</meaning>
+                </concept>
+                {code|99_1|joint_position}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>joint_position_comment</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Gelenkstellung</meaning>
                 </concept>
                 <value>{joint_position_comment}</value>
               </text>
@@ -152,21 +182,31 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.04</value>
+                <value>1030203</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
                 <meaning>Subchondrale Sklerosierung</meaning>
               </concept>
-              {code|99_200|subchondral_sclerosis}
-              <text>
+              <code>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.04.02</value>
+                  <value>subchondral_sclerosis</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Subchondrale Sklerosierung Text</meaning>
+                  <meaning>Code: Subchondrale Sklerosierung</meaning>
+                </concept>
+                {code|99_2|subchondral_sclerosis}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>subchondral_sclerosis_comment</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Subchondrale Sklerosierung</meaning>
                 </concept>
                 <value>{subchondral_sclerosis_comment}</value>
               </text>
@@ -174,21 +214,31 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.05</value>
+                <value>1030204</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
                 <meaning>Artikuläre Osteophyten</meaning>
               </concept>
-              {code|99_200|articular_osteophytes}
-              <text>
+              <code>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.05.02</value>
+                  <value>articular_osteophytes</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Artikuläre Osteophyten Text</meaning>
+                  <meaning>Code: Artikuläre Osteophyten</meaning>
+                </concept>
+                {code|99_2|articular_osteophytes}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>articular_osteophytes_comment</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Artikuläre Osteophyten</meaning>
                 </concept>
                 <value>{articular_osteophytes_comment}</value>
               </text>
@@ -196,21 +246,31 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.06</value>
+                <value>1030205</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
                 <meaning>Deformierungen der Gelenkpartner</meaning>
               </concept>
-              {code|99_200|joint_partner_deformation}
-              <text>
+              <code>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.06.02</value>
+                  <value>joint_partner_deformation</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Artikuläre Osteophyten Text</meaning>
+                  <meaning>Code: Deformierungen der Gelenkpartner</meaning>
+                </concept>
+                {code|99_2|joint_partner_deformation}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>joint_partner_deformation_comment</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Deformierungen der Gelenkpartner</meaning>
                 </concept>
                 <value>{joint_partner_deformation_comment}</value>
               </text>
@@ -218,21 +278,31 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.07</value>
+                <value>1030206</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
                 <meaning>Spongiosa (zystische Deformierungen in Gelenkpfanne und Hüftkopf)</meaning>
               </concept>
-              {code|99_200|spongiosa_cystic_deformation}
-              <text>
+              <code>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.07.02</value>
+                  <value>spongiosa_cystic_deformation</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Spongiosa (zystische Deformierungen in Gelenkpfanne und Hüftkopf)</meaning>
+                  <meaning>Code: Spongiosa (zystische Deformierungen in Gelenkpfanne und Hüftkopf)</meaning>
+                </concept>
+                {code|99_2|spongiosa_cystic_deformation}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>spongiosa_cystic_deformation_comment</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Spongiosa (zystische Deformierungen in Gelenkpfanne und Hüftkopf)</meaning>
                 </concept>
                 <value>{spongiosa_cystic_deformation_comment}</value>
               </text>
@@ -240,7 +310,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.08</value>
+                <value>1030207</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -249,26 +319,22 @@
               <code>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>230</value>
+                  <value>pelvis_dysplasia</value>
                   <scheme>
-                    <designator>DCM</designator>
+                    <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Yes-No</meaning>
+                  <meaning>Code: Beckenarchitektur (Dysplasien)</meaning>
                 </concept>
-                <value>373067005</value>
-                <scheme>
-                  <designator>SCT</designator>
-                </scheme>
-                <meaning>{pelvis_dysplasia}</meaning>
+                {code|231|pelvis_dysplasia}
               </code>
               <text>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.08.02</value>
+                  <value>pelvis_dysplasia_comment</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Beckenarchitektur (Dysplasien)</meaning>
+                  <meaning>Text: Beckenarchitektur (Dysplasien)</meaning>
                 </concept>
                 <value>{pelvis_dysplasia_comment}</value>
               </text>
@@ -276,21 +342,31 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.09</value>
+                <value>1030208</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
                 <meaning>Paraartikuläre Weichteile (Kalzifikationen)</meaning>
               </concept>
-              {code|99_300|paraarticular_tissue_calcification}
-              <text>
+              <code>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.09.02</value>
+                  <value>paraarticular_tissue_calcification</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Paraartikuläre Weichteile (Kalzifikationen)</meaning>
+                  <meaning>Code: Paraartikuläre Weichteile (Kalzifikationen)</meaning>
+                </concept>
+                {code|99_3|paraarticular_tissue_calcification}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>paraarticular_tissue_calcification_comment</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Paraartikuläre Weichteile (Kalzifikationen)</meaning>
                 </concept>
                 <value>{paraarticular_tissue_calcification_comment}</value>
               </text>
@@ -298,7 +374,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.03.10</value>
+                <value>1030209</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -307,11 +383,11 @@
               <text>
                 <relationship>CONTAINS</relationship>
                 <concept>
-                  <value>R01.03.10.01</value>
+                  <value>other_findings</value>
                   <scheme>
                     <designator>99_HS-KL</designator>
                   </scheme>
-                  <meaning>Sonstiges</meaning>
+                  <meaning>Text: Sonstiges</meaning>
                 </concept>
                 <value>{other_findings}</value>
               </text>
@@ -321,7 +397,7 @@
         <container flag="SEPARATE">
           <relationship>CONTAINS</relationship>
           <concept>
-            <value>R01.04</value>
+            <value>104</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -330,29 +406,49 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>R01.04.01</value>
+              <value>10401</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
               <meaning>Coxarthrose</meaning>
             </concept>
-            {code|99_400|coxarthrosis}
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>coxarthrosis</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: Coxarthrose</meaning>
+              </concept>
+              {code|99_4|coxarthrosis}
+            </code>
           </container>
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>R01.04.02</value>
+              <value>10402</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
               <meaning>Kellgren-Score</meaning>
             </concept>
-            {code|99_500|kellgren_score}
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>kellgren_score</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: Kellgren-Score</meaning>
+              </concept>
+              {code|99_5|kellgren_score}
+            </code>
           </container>
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>R01.04.03</value>
+              <value>10403</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -361,11 +457,11 @@
             <text>
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>R01.04.03.01</value>
+                <value>other_impressions</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
-                <meaning>Sonstiges</meaning>
+                <meaning>Text: Sonstiges</meaning>
               </concept>
               <value>{other_impressions}</value>
             </text>

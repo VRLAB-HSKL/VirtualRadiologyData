@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report type="Comprehensive SR">
+  <sopclass uid="1.2.840.10008.5.1.4.1.1.88.33">ComprehensivSRStorage</sopclass>
+  <charset>ISO_IR 192</charset>
+  <modality>SR</modality>
+  <patient>
+    <id>{PatientID}</id>
+    <name>
+      <first>{PatientName}</first>
+    </name>
+    <sex>{PatientSex}</sex>
+  </patient>
+  <study uid="{StudyInstanceUID}">
+    <description>{StudyDescription}</description>
+  </study>
+  <series uid="{SeriesInstanceUID}">
+    <number>1</number>
+    <description>{SeriesDescription}</description>
+  </series>
+  <instance uid="{SOPInstanceUID}">
+    <number>1</number>
+    <creation uid="1.2.276.0.7230010.3.0.3.5.3">
+      <date>{InstanceCreationDate}</date>
+      <time>{InstanceCreationTime}</time>
+    </creation>
+  </instance>
+  <coding>
+    <scheme designator="99_HS-KL">
+      <name>HS-KL Coding Scheme</name>
+      <organization>Hochschule Kaiserlsautern</organization>
+    </scheme>
+  </coding>
+  <document>
+    <completion flag="PARTIAL"></completion>
+    <verification flag="UNVERIFIED"></verification>
+    <content>
+      <date>{Date}</date>
+      <time>{Time}</time>
+      <container flag="SEPARATE">
+        <concept>
+          <value>1</value>
+          <scheme>
+            <designator>99_HS-KL</designator>
+          </scheme>
+          <meaning>CT-Thorax Covid-19</meaning>
+        </concept>
+        <container flag="SEPARATE">
+          <relationship>CONTAINS</relationship>
+          <concept>
+            <value>101</value>
+            <scheme>
+              <designator>99_HS-KL</designator>
+            </scheme>
+            <meaning>Klinische Angaben</meaning>
+          </concept>
+          <text>
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>ct_covid_clininfo</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Text: Klinische Angaben</meaning>
+            </concept>
+            <value>{ct_covid_clininfo}</value>
+          </text>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10101</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Aufnahme-Status</meaning>
+            </concept>
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_status</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: Aufnahme Status</meaning>
+              </concept>
+              {code|99_6|ct_covid_status}
+            </code>
+          </container>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10102</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Intubiert</meaning>
+            </concept>
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_intubiert</value>
+                <scheme>
+                  <designator>SCT</designator>
+                </scheme>
+                <meaning>Code: Intubiert</meaning>
+              </concept>
+              {code|231|ct_covid_intubiert}
+            </code>
+          </container>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10103</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>COVID-PCR Status</meaning>
+            </concept>
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_pcr</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: COVID-PCR Status</meaning>
+              </concept>
+              {code|99_7|ct_covid_pcr}
+            </code>
+            <date>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_pcr_date</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>COVID-PCR Datum</meaning>
+              </concept>
+              <value>{ct_covid_pcr_date}</value>
+            </date>
+          </container>
+        </container>
+        <container flag="SEPARATE">
+          <relationship>CONTAINS</relationship>
+          <concept>
+            <value>102</value>
+            <scheme>
+              <designator>99_HS-KL</designator>
+            </scheme>
+            <meaning>Fragestellung</meaning>
+          </concept>
+          <text>
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>ct_covid_fragestellung</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Text: Fragenstellunge</meaning>
+            </concept>
+            <value>{ct_covid_fragestellung}</value>
+          </text>
+        </container>
+        <container flag="SEPARATE">
+          <relationship>CONTAINS</relationship>
+          <concept>
+            <value>103</value>
+            <scheme>
+              <designator>99_HS-KL</designator>
+            </scheme>
+            <meaning>Befund</meaning>
+          </concept>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10301</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Voruntersuchung</meaning>
+            </concept>
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_vergleich</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: Voruntersuchung</meaning>
+              </concept>
+              {code|99_8|ct_covid_vergleich}
+            </code>
+            <date>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_vergleich_date</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Datum der Voruntersuchung</meaning>
+              </concept>
+              <value>{ct_covid_vergleich_date}</value>
+            </date>
+          </container>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10302</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>CT-Protokoll</meaning>
+            </concept>
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_protokoll</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: CT-Protokoll</meaning>
+              </concept>
+              {code|99_9|ct_covid_protokoll}
+            </code>
+          </container>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10303</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Lungenparenchym/Atemwege</meaning>
+            </concept>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030301</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Milchglastrübung</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_milchglas</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Milchglastrübung</meaning>
+                </concept>
+                {code|99_10|ct_covid_milchglas}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030302</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Dominantes Milchglasmuster</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_milchglasmuster</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Dominantes Milchglasmuster</meaning>
+                </concept>
+                {code|99_11|ct_covid_milchglasmuster}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030303</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Morphologie der Milchglastrübung</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_milchglasmorpho</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Morphologie der Milchglastrübung</meaning>
+                </concept>
+                {code|99_12|ct_covid_milchglasmorpho}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030304</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Verteilungsmuster der Milchglastrübung</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_milchglasverteilung</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Verteilungsmuster der Milchglastrübung</meaning>
+                </concept>
+                {code|99_13|ct_covid_milchglasverteilung}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030305</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Seiten-Ausprägung der Milchglastrübung</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_milchglasseite</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Seiten-Ausprägung der Milchglastrübung</meaning>
+                </concept>
+                {code|99_14|ct_covid_milchglasseite}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030306</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Dominantes Lungenfeld der Milchglastrübung</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_milchglasfeld</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Dominantes Lungenfeld der Milchglastrübung</meaning>
+                </concept>
+                {code|99_15|ct_covid_milchglasfeld}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030307</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Ausdehnung/Serverity des Lungenbefalls quantitativ</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_milchglasgrad</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Ausdehnung/Serverity des Lungenbefalls quantitativ</meaning>
+                </concept>
+                {code|99_16|ct_covid_milchglasgrad}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030308</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Konsolidierungs-Muster</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_konsolidierung</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Konsolidierungs-Muster</meaning>
+                </concept>
+                {code|99_17|ct_covid_konsolidierung}
+              </code>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_konsolidierungmuster</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Konsolidierungs-Muster</meaning>
+                </concept>
+                {code|99_18|ct_covid_konsolidierungmuster}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030309</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Zentrilobuläre Noduli/Tree in bud</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_noduli</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Zentrilobuläre Noduli/Tree in bud</meaning>
+                </concept>
+                {code|231|ct_covid_noduli}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>10303010</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Lungengerüstveränderung</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_lungengerüst</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Lungengerüstveränderung</meaning>
+                </concept>
+                {code|231|ct_covid_lungengerüst}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_lungengerüst_text</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Lungengerüstveränderung</meaning>
+                </concept>
+                <value>{ct_covid_lungengerüst_text}</value>
+              </text>
+            </container>
+          </container>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10304</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Weitere Befunde</meaning>
+            </concept>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030401</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Pleuraerguss links</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_ple_li</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Pleuraerguss links</meaning>
+                </concept>
+                {code|99_19|ct_covid_ple_li}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030402</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Pleuraerguss rechts</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_ple_re</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Pleuraerguss rechts</meaning>
+                </concept>
+                {code|99_19|ct_covid_ple_re}
+              </code>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030403</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Lymphknoten</meaning>
+              </concept>
+              <code>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_lk</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Code: Lymphknoten</meaning>
+                </concept>
+                {code|99_20|ct_covid_lk}
+              </code>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_lk_text</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Lymphknoten</meaning>
+                </concept>
+                <value>{ct_covid_lk_text}</value>
+              </text>
+            </container>
+            <container flag="SEPARATE">
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>1030404</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Sonstiges</meaning>
+              </concept>
+              <text>
+                <relationship>CONTAINS</relationship>
+                <concept>
+                  <value>ct_covid_other</value>
+                  <scheme>
+                    <designator>99_HS-KL</designator>
+                  </scheme>
+                  <meaning>Text: Sonstiges</meaning>
+                </concept>
+                <value>{ct_covid_other}</value>
+              </text>
+            </container>
+          </container>
+        </container>
+        <container flag="SEPARATE">
+          <relationship>CONTAINS</relationship>
+          <concept>
+            <value>104</value>
+            <scheme>
+              <designator>99_HS-KL</designator>
+            </scheme>
+            <meaning>Beurteilung</meaning>
+          </concept>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10401</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Klassifikation des Lungenbefalls</meaning>
+            </concept>
+            <code>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_class</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Code: Klassifikation des Lungenbefalls</meaning>
+              </concept>
+              {code|99_21|ct_covid_class}
+            </code>
+          </container>
+          <container flag="SEPARATE">
+            <relationship>CONTAINS</relationship>
+            <concept>
+              <value>10402</value>
+              <scheme>
+                <designator>99_HS-KL</designator>
+              </scheme>
+              <meaning>Sonstiges</meaning>
+            </concept>
+            <text>
+              <relationship>CONTAINS</relationship>
+              <concept>
+                <value>ct_covid_Beurteilung</value>
+                <scheme>
+                  <designator>99_HS-KL</designator>
+                </scheme>
+                <meaning>Text: Sonstiges</meaning>
+              </concept>
+              <value>{ct_covid_Beurteilung}</value>
+            </text>
+          </container>
+        </container>
+      </container>
+    </content>
+  </document>
+</report>

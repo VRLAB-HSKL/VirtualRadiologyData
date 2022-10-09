@@ -4,6 +4,7 @@ from PyQt6.QtGui import QAction
 from PyQt6.uic import loadUi
 import os, sys, subprocess, tempfile, threading, datetime, re
 from pydicom import Dataset
+from pydicom.uid import generate_uid
 from threading import Thread
 from pathlib import Path
 import copy
@@ -34,8 +35,6 @@ class Menu(QDialog):
         self.seriestree.itemClicked.connect(self.series_line_singleclick_handler)
         self.seriestree.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.seriestree.customContextMenuRequested.connect(self.menuContextTree)
-        '''Label Einstellungen'''
-        #self.label.setText("Dies ist ein Test")
         '''Button Einstellungen'''
         self.schichtenBtn.setEnabled(False)
         self.schichtenBtn.clicked.connect(self.schichtenbtn_clicked)
@@ -53,12 +52,16 @@ class Menu(QDialog):
         
         self.tempdir = tempfile.TemporaryDirectory() #Anlegen eines temporären Ordners für die Bilddateien
         print(self.tempdir.name)
-        for root, dirnames, filenames in os.walk('./template'):                                     #
-            if dirnames:                                                                            #Erstellen der Einträge 
-                for index, elem in enumerate(dirnames):                                             #im Context Menü, um
-                    action = QAction(elem)                                                          #SR Vorlagen auszuwählen
-                    action.triggered.connect(lambda checked, index = index: self.createSR(index))   #
-                    self.srBtns.append(action)                                                      #
+        for root, dirnames, filenames in os.walk('./template'):                                         #
+            if dirnames:                                                                                #
+                index = 0                                                                               #
+                for elem in dirnames:                                                                   #Erstellen der Einträge
+                    fnames = os.path.join(root, elem, elem)                                             #im Context Menü, um
+                    if os.path.isfile(fnames + '.html') and os.path.isfile(fnames + '.xml'):            #SR Vorlagen auszuwählen
+                        action = QAction(elem)                                                          #
+                        action.triggered.connect(lambda checked, index = index: self.createSR(index))   #
+                        self.srBtns.append(action)                                                      #
+                        index += 1
         Path('./output').mkdir(parents=True, exist_ok=True) #Erstellen eines Output-Ordners, falls nicht exitstent
         self.loadData()
         
@@ -215,10 +218,13 @@ class Menu(QDialog):
         imgdata['PatientSex'] = str(self.data['PatientSex'].value)
         imgdata['StudyDescription'] = str(self.data['StudyDescription'].value)
         imgdata['SeriesDescription'] = str(self.data['SeriesDescription'].value)
+        imgdata['StudyInstanceUID'] = str(self.data['StudyInstanceUID'].value)
+        imgdata['SeriesInstanceUID'] = str(self.data['SeriesInstanceUID'].value)
+        imgdata['SOPInstanceUID'] = generate_uid()
         imgdata['InstanceCreationDate'] = "20050726"
         imgdata['InstanceCreationTime'] = "102049"
-        imgdata['Date'] = datetime.datetime.now().strftime('%Y-%m-%d')
-        imgdata['Time'] = datetime.datetime.now().strftime('%H:%M:%S')
+        imgdata['Date'] = datetime.datetime.now().strftime('%Y%m%d')
+        imgdata['Time'] = datetime.datetime.now().strftime('%H%M%S')
         config.fname = self.srBtns[index].text()
         with open(f"./template/{config.fname}/{config.fname}.xml", 'r') as sr:
             txt = sr.read()
