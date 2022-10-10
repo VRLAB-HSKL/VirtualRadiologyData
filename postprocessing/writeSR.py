@@ -3,7 +3,7 @@ from postprocessing import sendSR, extractCID
 
 def writeSR(values):
     codes = extractCID.getcodes()
-    with open("./output/output.xml", 'r') as sr:
+    with open("./output/output.xml", 'r', encoding='utf-8') as sr:
         txt = sr.read()
     codeliste = re.findall('([\t ]*){code\|([\d_]+)\|(\w+)}', txt)
     zuweisung = {}

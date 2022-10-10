@@ -65,12 +65,7 @@ class Menu(QDialog):
         Path('./output').mkdir(parents=True, exist_ok=True) #Erstellen eines Output-Ordners, falls nicht exitstent
         self.loadData()
         
-    
-    def __del__(self):
-        self.tempdir.cleanup()
-        print("tempdir gelöscht")
-        
-        
+              
     def loadData(self):
         if self.role == 'patient':
             self.thread = patient.PatientWorker(self.server)
