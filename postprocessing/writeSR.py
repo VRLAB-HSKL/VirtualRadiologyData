@@ -12,7 +12,7 @@ def writeSR(values):
     for zk, zv in zuweisung.items():
         vv = values[f"{zk}"]
         for ok, ov in codes[zv[0]].items():
-            if vv == ov[1]:
+            if vv.upper() == ov[1].upper():
                 pat = '{code\|'+zv[0]+'\|'+zk+'}'
                 code = f"<value>{ok}</value>\n"\
                 f"{zv[1]}<scheme>\n"\

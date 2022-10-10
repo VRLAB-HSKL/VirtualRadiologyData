@@ -7,27 +7,27 @@
 | 99_104 | 99_HS-KL          | ausgeprägt inkongruent (varisch)   |
 
 # CID 99_2
-| value  | scheme designator | meaning      |
-|--------|-------------------|--------------|
-| 99_201 | 99_HS-KL          | keine        |
-| 99_202 | 99_HS-KL          | gering       |
-| 99_203 | 99_HS-KL          | mittelgradig |
-| 99_204 | 99_HS-KL          | ausgeprägt   |
+| value     | scheme designator | meaning      |
+|-----------|-------------------|--------------|
+| 260413007 | SCT               | keine        |
+| 99_202    | 99_HS-KL          | gering       |
+| 99_203    | 99_HS-KL          | mittelgradig |
+| 99_204    | 99_HS-KL          | ausgeprägt   |
 
 # CID 99_3
-| value  | scheme designator | meaning       |
-|--------|-------------------|---------------|
-| 99_301 | 99_HS-KL          | keine         |
-| 99_302 | 99_HS-KL          | vereinzelt    |
-| 99_303 | 99_HS-KL          | ankylosierend |
+| value     | scheme designator | meaning       |
+|-----------|-------------------|---------------|
+| 260413007 | SCT               | keine         |
+| 99_302    | 99_HS-KL          | vereinzelt    |
+| 99_303    | 99_HS-KL          | ankylosierend |
 
 # CID 99_4
-| value  | scheme designator | meaning         |
-|--------|-------------------|-----------------|
-| 99_401 | 99_HS-KL          | keine           |
-| 99_402 | 99_HS-KL          | dysplastisch    |
-| 99_403 | 99_HS-KL          | degenerativ     |
-| 99_404 | 99_HS-KL          | posttraumatisch |
+| value     | scheme designator | meaning         |
+|-----------|-------------------|-----------------|
+| 260413007 | SCT               | keine           |
+| 99_402    | 99_HS-KL          | dysplastisch    |
+| 99_403    | 99_HS-KL          | degenerativ     |
+| 99_404    | 99_HS-KL          | posttraumatisch |
 
 # CID 99_5
 | value  | scheme designator | meaning |
@@ -39,20 +39,20 @@
 | 99_505 | 99_HS-KL          | 4       |
 
 # CID 99_6
-| value  | scheme designator | meaning         |
-|--------|-------------------|-----------------|
-| 99_601 | 99_HS-KL          | Unbekannt       |
-| 99_602 | 99_HS-KL          | Intensivstation |
-| 99_603 | 99_HS-KL          | Stationär       |
-| 99_604 | 99_HS-KL          | Notaufnahme     |
-| 99_605 | 99_HS-KL          | Ambulant        |
+| value     | scheme designator | meaning         |
+|-----------|-------------------|-----------------|
+| 261665006 | SCT               | Unbekannt       |
+| 309904001 | SCT               | Intensivstation |
+| 99_603    | 99_HS-KL          | Stationär       |
+| 99_604    | 99_HS-KL          | Notaufnahme     |
+| 99_605    | 99_HS-KL          | Ambulant        |
 
 # CID 99_7
-| value  | scheme designator | meaning     |
-|--------|-------------------|-------------|
-| 99_701 | 99_HS-KL          | unbekannt   |
-| 99_702 | 99_HS-KL          | positiv     |
-| 99_703 | 99_HS-KL          | negativ     |
+| value     | scheme designator | meaning   |
+|-----------|-------------------|-----------|
+| 261665006 | SCT               | unbekannt |
+| 10828004  | SCT               | positiv   |
+| 260385009 | SCT               | negativ   |
 
 # CID 99_8
 | value  | scheme designator | meaning                         |
@@ -73,17 +73,17 @@
 | 99_907 | 99_HS-KL          | CT Thorax Pulmonalisangiographie                     |
 
 # CID 99_10
-| value   | scheme designator | meaning             |
-|---------|-------------------|---------------------|
-| 99_1001 | 99_HS-KL          | Keine               |
-| 99_1002 | 99_HS-KL          | Multiple/Multifokal |
-| 99_1003 | 99_HS-KL          | Einzeln             |
-| 99_1004 | 99_HS-KL          | Diffuse Verteilung  |
+| value     | scheme designator | meaning             |
+|-----------|-------------------|---------------------|
+| 260413007 | SCT               | Keine               |
+| 99_1002   | 99_HS-KL          | Multiple/Multifokal |
+| 99_1003   | 99_HS-KL          | Einzeln             |
+| 99_1004   | 99_HS-KL          | Diffuse Verteilung  |
 
 # CID 99_11
 | value   | scheme designator | meaning                    |
 |---------|-------------------|----------------------------|
-| 99_1101 | 99_HS-KL          | Mosaikmuster               |
+| 112130  | DCM               | Mosaikmuster               |
 | 99_1102 | 99_HS-KL          | Crazy-paving Muster        |
 | 99_1103 | 99_HS-KL          | Reverse Halo/Atoll-Zeichen |
 | 99_1104 | 99_HS-KL          | nur Milchglas              |
@@ -96,19 +96,19 @@
 | 99_1203 | 99_HS-KL          | konfluierend/diffus         |
 
 # CID 99_13
-| value   | scheme designator | meaning                                |
-|---------|-------------------|----------------------------------------|
-| 99_1301 | 99_HS-KL          | peripher                               |
-| 99_1302 | 99_HS-KL          | zentral                                |
-| 99_1303 | 99_HS-KL          | multifokal ohne spezifische Verteilung |
-| 99_1304 | 99_HS-KL          | multifokal in folgender Verteilung     |
+| value    | scheme designator | meaning                                |
+|----------|-------------------|----------------------------------------|
+| 99_1301  | 99_HS-KL          | peripher                               |
+| 26216008 | SCT               | zentral                                |
+| 99_1303  | 99_HS-KL          | multifokal ohne spezifische Verteilung |
+| 99_1304  | 99_HS-KL          | multifokal in folgender Verteilung     |
 
 # CID 99_14
-| value   | scheme designator | meaning   |
-|---------|-------------------|-----------|
-| 99_1401 | 99_HS-KL          | bilateral |
-| 99_1402 | 99_HS-KL          | links     |
-| 99_1403 | 99_HS-KL          | rechts    |
+| value    | scheme designator | meaning   |
+|----------|-------------------|-----------|
+| 51440002 | SCT               | bilateral |
+| 7771000  | SCT               | links     |
+| 24028007 | SCT               | rechts    |
 
 # CID 99_15
 | value   | scheme designator | meaning                            |
@@ -116,7 +116,7 @@
 | 99_1501 | 99_HS-KL          | kein dominantes Lungenfeld         |
 | 99_1502 | 99_HS-KL          | alle Felder vergleichbar betroffen |
 | 99_1503 | 99_HS-KL          | oben                               |
-| 99_1504 | 99_HS-KL          | mitte                              |
+| C25569  | NCIt              | mitte                              |
 | 99_1505 | 99_HS-KL          | unten                              |
 
 # CID 99_16
@@ -136,10 +136,10 @@
 | 99_1705 | 99_HS-KL          | unspezifische Konsolidierungen          |
 
 # CID 99_18
-| value   | scheme designator | meaning  |
-|---------|-------------------|----------|
-| 99_1801 | 99_HS-KL          | rundlich |
-| 99_1802 | 99_HS-KL          | sonstige |
+| value    | scheme designator | meaning  |
+|----------|-------------------|----------|
+| 42700002 | SCT               | rundlich |
+| 99_1802  | 99_HS-KL          | sonstige |
 
 # CID 99_19
 | value   | scheme designator | meaning               |
