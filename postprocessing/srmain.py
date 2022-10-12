@@ -2,8 +2,6 @@ import urllib.parse
 import http.server
 import socketserver
 import webbrowser
-import threading
-import re
 if __name__ != "__main__":
     from postprocessing import writeSR, config
 
@@ -33,7 +31,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         datalength = int(self.headers['Content-Length'])
         field_data = self.rfile.read(datalength)
-        fields = urllib.parse.parse_qs(field_data.decode('latin-1'), keep_blank_values=True)
+        fields = urllib.parse.parse_qs(field_data.decode('utf-8'), keep_blank_values=True)
         del fields['fulltext']
         values = {}
         for k, v in fields.items():

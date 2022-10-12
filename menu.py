@@ -185,7 +185,7 @@ class Menu(QDialog):
             
     def vrBtn_clicked(self):
         if self.id in image.Image.images:
-            subprocess.Popen([r"C:\Users\RHoock\Desktop\VirtualRadiologyBuild\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", f"{series.Series.serieses[self.id].getFilename()}"])
+            subprocess.Popen([r"C:\Users\Rafael\Desktop\VirtualRadiology\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", f"{series.Series.serieses[self.id].getFilename()}"])
         else:
             self.vrBtn.setText("keine Serie ausgewählt!")
 
