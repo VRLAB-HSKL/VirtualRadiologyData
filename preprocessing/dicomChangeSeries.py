@@ -2,9 +2,9 @@ from pydicom.uid import generate_uid
 import pydicom
 import convertDicomDir
 
-fin = r"C:\Users\RHoock\Downloads\VHF-Pelvis.tar\VHF-Pelvis\Pelvis"
-fout = r"C:\Users\RHoock\Desktop\DICOM\female\Pelvis"
-series = "Pelvis"
+fin = r"/path/to/series"
+fout = r"/output/folder"
+series = "Series Description"
 seriesUID = generate_uid()
 imglist = convertDicomDir.imagelist(fin)
 for i, ds in enumerate(imglist):

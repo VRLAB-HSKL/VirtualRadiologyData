@@ -1,6 +1,6 @@
 import numpy as np
 import skimage.exposure as se
-from preprocessing import windowFrontal, windowSagittal
+from preprocessing.showimg2d import windowFrontal, windowSagittal
 
 
 class BildDaten(object):

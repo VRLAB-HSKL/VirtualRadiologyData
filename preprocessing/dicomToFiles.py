@@ -23,7 +23,6 @@ def convert(seruid, path=None, name=None):
     cube = image.Image.images[ds.SeriesInstanceUID].volume
     cube = cube.astype("uint8")
     cube = cube[::-1, :, ::-1]
-    #cube = cube[:, 150:350, 100:370]
     cube.astype(form).tofile(f"{path}{name}.raw")
     
     

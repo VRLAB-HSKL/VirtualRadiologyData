@@ -9,8 +9,8 @@ from threading import Thread
 from pathlib import Path
 import copy
 from postprocessing import srmain, config
-from preprocessing import patient, study, series, image, dicomToFiles, windowTransversal
-
+from preprocessing import patient, study, series, image, dicomToFiles
+from preprocessing.showimg2d import windowTransversal
 
 class Menu(QDialog):
     def __init__(self):

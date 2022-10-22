@@ -5,13 +5,13 @@ from PyQt6.uic import loadUi
 import sys
 import os
 import cv2
-from preprocessing import bildDaten, fenster
+from preprocessing.showimg2d import bildDaten, fenster
 
 
 class WindowTransversal(QDialog):
     def __init__(self, img):
         super().__init__()
-        loadUi("./preprocessing/bilder.ui", self)
+        loadUi("./preprocessing/showimg2d/bilder.ui", self)
         self.setWindowTitle('Transversalebene')
         '''Attribute'''
         self.fenster = fenster.Fenster(self)
@@ -46,7 +46,7 @@ class WindowTransversal(QDialog):
                  self.bildDaten.red, 1, cv2.LINE_4)
         cv2.rectangle(cvimage, (0, 0), (cvimage.shape[0]-1, cvimage.shape[1]-1), self.bildDaten.cyan, 1,
                       cv2.LINE_4)
-        cv2.putText(cvimage, f"Cross = {self.bildDaten.cross}", (10, cvimage.shape[0]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (40, 200, 230), 1)
+        #v2.putText(cvimage, f"Cross = {self.bildDaten.cross}", (10, cvimage.shape[0]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (40, 200, 230), 1)
 
         fenster.show(self, cvimage)
 
