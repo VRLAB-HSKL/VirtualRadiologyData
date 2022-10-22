@@ -8,15 +8,16 @@ from pydicom.uid import generate_uid
 from threading import Thread
 from pathlib import Path
 import copy
-from postprocessing import srmain, config
+from postprocessing import srmain, templconf
 from preprocessing import patient, study, series, image, dicomToFiles
 from preprocessing.showimg2d import windowTransversal
+import config
 
 class Menu(QDialog):
     def __init__(self):
         super().__init__()
         loadUi(os.path.join(sys.path[0], "menu.ui"), self)
-        self.server = "10.0.27.2"
+        self.server = config.pacsIP
         '''Study TreeWidget Einstellungen'''
         self.patienttree.hideColumn(0)
         self.patienttree.setAlternatingRowColors(True)
@@ -68,13 +69,13 @@ class Menu(QDialog):
               
     def loadData(self):
         if self.role == 'patient':
-            self.thread = patient.PatientWorker(self.server)
+            self.thread = patient.PatientWorker()
         if self.role == 'study':
-            self.thread = study.StudyWorker(self.server, self.id)
+            self.thread = study.StudyWorker(self.id)
         if self.role == 'series':
-            self.thread = series.SeriesWorker(self.server, self.id)  
+            self.thread = series.SeriesWorker(self.id)
         if self.role == 'image':
-            self.thread = image.ImageWorker(self.server, self.id)
+            self.thread = image.ImageWorker(self.id)
             self.schichtenBtn.setText("downloading ...")
         self.thread.start()
         self.thread.rebound.connect(self.loadhandler)
@@ -185,7 +186,7 @@ class Menu(QDialog):
             
     def vrBtn_clicked(self):
         if self.id in image.Image.images:
-            subprocess.Popen([r"C:\Users\Rafael\Desktop\VirtualRadiology\VirtualRadiology.exe", "-ap", self.tempdir.name, "-m", f"{series.Series.serieses[self.id].getFilename()}"])
+            subprocess.Popen([config.VirtRadPath, "-ap", self.tempdir.name, "-m", f"{series.Series.serieses[self.id].getFilename()}"])
         else:
             self.vrBtn.setText("keine Serie ausgewählt!")
 
@@ -220,8 +221,8 @@ class Menu(QDialog):
         imgdata['InstanceCreationTime'] = "102049"
         imgdata['Date'] = datetime.datetime.now().strftime('%Y%m%d')
         imgdata['Time'] = datetime.datetime.now().strftime('%H%M%S')
-        config.fname = self.srBtns[index].text()
-        with open(f"./template/{config.fname}/{config.fname}.xml", 'r') as sr:
+        templconf.fname = self.srBtns[index].text()
+        with open(f"./template/{templconf.fname}/{templconf.fname}.xml", 'r') as sr:
             txt = sr.read()
         for k, v in imgdata.items():
             pat = f"{{{k}}}"
@@ -229,6 +230,6 @@ class Menu(QDialog):
         with open("./output/output.xml", 'w') as out:
             out.write(txt)
         if self.srThread is not None:
-            config.httpd.shutdown()
+            templconf.httpd.shutdown()
         self.srThread = Thread(target=srmain.main)
         self.srThread.start()

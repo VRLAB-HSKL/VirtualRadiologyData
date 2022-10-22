@@ -1,11 +1,14 @@
 from pynetdicom.sop_class import ComprehensiveSRStorage
 from pynetdicom import AE
+import sys
+sys.path.append("..") # Adds higher directory to python modules path.
+import config
 
 def sendSR(ds):
     ae = AE()
     # Add a requested presentation context
     ae.add_requested_context(ComprehensiveSRStorage)
-    assoc = ae.associate("127.0.0.1", 4242)
+    assoc = ae.associate(config.pacsIP, config.pacsPort)
     if assoc.is_established:
         # Use the C-STORE service to send the dataset
         # returns the response status as a pydicom Dataset

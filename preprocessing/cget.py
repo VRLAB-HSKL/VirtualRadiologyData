@@ -12,7 +12,7 @@ from pynetdicom.sop_class import (
     PatientRootQueryRetrieveInformationModelGet,
     CTImageStorage, ComputedRadiographyImageStorage
 )
-
+import config
 #debug_logger()
 
 
@@ -30,7 +30,7 @@ def handle_store(event):
     return 0x0000
 
 
-def c_get(server, seriesid):
+def c_get(seriesid):
     handlers = [(evt.EVT_C_STORE, handle_store)]
 
     # Initialise the Application Entity
@@ -39,21 +39,15 @@ def c_get(server, seriesid):
     # Add the requested presentation contexts (QR SCU)
     ae.add_requested_context(PatientRootQueryRetrieveInformationModelGet)
     # Add the requested presentation context (Storage SCP)
-    '''
-    if modality == 'CT':
-        ae.add_requested_context(CTImageStorage)
-        role = build_role(CTImageStorage, scp_role=True)
-    if modality == 'CR':
-        ae.add_requested_context(ComputedRadiographyImageStorage)
-        role = build_role(ComputedRadiographyImageStorage, scp_role=True)
-    '''
     ae.add_requested_context(CTImageStorage)
-    role = build_role(CTImageStorage, scp_role=True)
+    role = build_role("1.2.840.10008.5.1.4.1.1.2", scp_role=True) #CTImageStorage role
 
     # Create our Identifier (query) dataset
     # We need to supply a Unique Key Attribute for each level above the
     #   Query/Retrieve level
     ds = Dataset()
+    ds.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.2"
+    ds.Modality = "CT"
     ds.QueryRetrieveLevel = 'SERIES'
     # Unique key for PATIENT level
     ds.PatientID = ''  # NOID
@@ -63,7 +57,8 @@ def c_get(server, seriesid):
     ds.SeriesInstanceUID = seriesid
     print(ds)
     # Associate with peer AE at IP 127.0.0.1 and port 4242
-    assoc = ae.associate(server, 4242, ext_neg=[role], evt_handlers=handlers)
+    print(f"{config.pacsIP = }, {config.pacsPort = }")
+    assoc = ae.associate(config.pacsIP, config.pacsPort, ext_neg=[role], evt_handlers=handlers)
 
     if assoc.is_established:
         # Use the C-GET service to send the identifier
@@ -78,9 +73,9 @@ def c_get(server, seriesid):
         print('Association rejected, aborted or never connected')
 
 
-def imagelist(server, seriesid):
+def imagelist(seriesid):
     global instanceList
     instanceList = []
-    c_get(server, seriesid)
+    c_get(seriesid)
     instanceList.sort(key=lambda i: i.ImagePositionPatient[2], reverse=True)
     return instanceList

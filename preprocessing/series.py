@@ -27,10 +27,9 @@ class Series():
 class SeriesWorker(QThread):
     rebound = pyqtSignal(str)
     
-    def __init__(self, server, stduid, parent=None):
+    def __init__(self, stduid, parent=None):
         QThread.__init__(self, parent)
         print("Thread startet!")
-        self.server = server
         self.ds = Dataset()
         self.ds.QueryRetrieveLevel = "SERIES"
         self.ds.StudyInstanceUID = stduid
@@ -43,7 +42,7 @@ class SeriesWorker(QThread):
     
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
-        data = cfind.cfind(self.server, self.ds)
+        data = cfind.cfind(self.ds)
         for elem in data:
             res = elem.StudyInstanceUID
             Series(elem)

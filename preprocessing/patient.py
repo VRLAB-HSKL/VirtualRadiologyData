@@ -33,10 +33,9 @@ class Patient():
 class PatientWorker(QThread):
     rebound = pyqtSignal(str)
     
-    def __init__(self, server, parent=None):
+    def __init__(self, parent=None):
         QThread.__init__(self, parent)
         print("Thread startet!")
-        self.server = server
         self.ds = Dataset()
         self.ds.QueryRetrieveLevel = "PATIENT"
         self.ds.PatientName = ""
@@ -46,7 +45,7 @@ class PatientWorker(QThread):
     
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
-        data = cfind.cfind(self.server, self.ds)
+        data = cfind.cfind(self.ds)
         for elem in data:
             res = elem.PatientID
             Patient(elem)

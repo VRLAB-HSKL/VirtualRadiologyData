@@ -26,14 +26,13 @@ def rescale_intensity(data):
 class ImageWorker(QThread):
     rebound = pyqtSignal(str)
     
-    def __init__(self, server, seriesid, parent=None):
+    def __init__(self, seriesid, parent=None):
         QThread.__init__(self, parent)
-        self.server = server
         self.seriesid = seriesid
         print("Thread startet!")
         
     def run(self):
-        imglist = cget.imagelist(self.server, self.seriesid)
+        imglist = cget.imagelist(self.seriesid)
         print(imglist)
         seruid = imglist[0].SeriesInstanceUID
         Image(seruid, imglist)
