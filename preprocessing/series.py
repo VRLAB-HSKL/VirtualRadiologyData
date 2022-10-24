@@ -43,10 +43,15 @@ class SeriesWorker(QThread):
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
         data = cfind.cfind(self.ds)
+        res = None
         for elem in data:
             res = elem.StudyInstanceUID
             Series(elem)
-        self.rebound.emit(res)
+        Series.serieses = dict(sorted(Series.serieses.items(), key=lambda i: i[1].serdesc))
+        if res != None:
+            self.rebound.emit(res)
+        else:
+            print("######NO DATA######")
         self.stop()
     
     def stop(self):

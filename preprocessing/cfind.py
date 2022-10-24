@@ -3,7 +3,7 @@ from pydicom.dataset import Dataset
 from pynetdicom import AE, debug_logger
 from pynetdicom.sop_class import PatientRootQueryRetrieveInformationModelFind
 import config
-debug_logger()
+#debug_logger()
 
 
 def cfind(ds):

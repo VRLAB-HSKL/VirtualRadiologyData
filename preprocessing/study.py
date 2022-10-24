@@ -43,10 +43,15 @@ class StudyWorker(QThread):
     def run(self):
         """abrufen der Study-Informationen von Orthanc"""
         data = cfind.cfind(self.ds)
+        res = None
         for elem in data:
             res = elem.PatientID
             Study(elem)
-        self.rebound.emit(res)
+        Study.studies = dict(sorted(Study.studies.items(), key=lambda i: i[1].stddesc))
+        if res != None:
+            self.rebound.emit(res)
+        else:
+            print("######NO DATA######")
         self.stop()
     
     def stop(self):

@@ -40,14 +40,12 @@ def c_get(seriesid):
     ae.add_requested_context(PatientRootQueryRetrieveInformationModelGet)
     # Add the requested presentation context (Storage SCP)
     ae.add_requested_context(CTImageStorage)
-    role = build_role("1.2.840.10008.5.1.4.1.1.2", scp_role=True) #CTImageStorage role
+    role = build_role(CTImageStorage, scp_role=True)
 
     # Create our Identifier (query) dataset
     # We need to supply a Unique Key Attribute for each level above the
     #   Query/Retrieve level
     ds = Dataset()
-    ds.MediaStorageSOPClassUID = "1.2.840.10008.5.1.4.1.1.2"
-    ds.Modality = "CT"
     ds.QueryRetrieveLevel = 'SERIES'
     # Unique key for PATIENT level
     ds.PatientID = ''  # NOID

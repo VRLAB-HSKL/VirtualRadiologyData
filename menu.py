@@ -94,22 +94,25 @@ class Menu(QDialog):
             tree.clear()
         if self.role == 'image':
             dictionary = image.Image.images
-        for k, v in dictionary.items():
-            if self.role == 'study' and self.id != v.patid:
-                continue
-            if self.role == 'series' and self.id != v.stduid:
-                continue
-            if self.role == 'image':
-                if k == self.id:
-                    dicomToFiles.convert(k, path=self.tempdir.name)
-                    self.schichtenBtn.setEnabled(True)
-                    self.vrBtn.setEnabled(True)
-                    self.schichtenBtn.setText("Bilder anzeigen")
-                    self.vrBtn.setText("Bilder in VR anzeigen")
-            else:
-                line = QTreeWidgetItem(v.toTreeView())
-                tree.addTopLevelItem(line)
-        
+        if dictionary:
+            for k, v in dictionary.items():
+                if self.role == 'study' and self.id != v.patid:
+                    continue
+                if self.role == 'series' and self.id != v.stduid:
+                    continue
+                if self.role == 'image':
+                    if k == self.id:
+                        dicomToFiles.convert(k, path=self.tempdir.name)
+                        self.schichtenBtn.setEnabled(True)
+                        self.vrBtn.setEnabled(True)
+                        self.schichtenBtn.setText("Bilder anzeigen")
+                        self.vrBtn.setText("Bilder in VR anzeigen")
+                else:
+                    line = QTreeWidgetItem(v.toTreeView())
+                    tree.addTopLevelItem(line)
+        else:
+            print("#######NO DATA#######")
+
         
     def patient_line_click_handler(self):
         self.role = 'study'
@@ -162,10 +165,11 @@ class Menu(QDialog):
         for k, v in ser.data.items():
             self.data.add_new(k, v.VR, v.value)
         self.label.setText(f"{self.data}")
-        if any(k == self.id for k, v in image.Image.images.items()):
-            self.loadhandler()
-        else:
-            self.loadData()
+        if ser.data.Modality != "SR":
+            if any(k == self.id for k, v in image.Image.images.items()):
+                self.loadhandler()
+            else:
+                self.loadData()
     
     def series_line_singleclick_handler(self):
         item = self.seriestree.currentItem()
@@ -199,12 +203,14 @@ class Menu(QDialog):
         item = self.seriestree.itemAt(point)
         self.id = item.text(0)
         self.series_line_singleclick_handler()
-        menu = QMenu()
-        submenu = QMenu("SR erstellen", self)
-        for btn in self.srBtns:
-            submenu.addAction(btn)
-        menu.addMenu(submenu)
-        menu.exec(self.seriestree.mapToGlobal(point))
+
+        if item.text(1) != "SR":
+            menu = QMenu()
+            submenu = QMenu("SR erstellen", self)
+            for btn in self.srBtns:
+                submenu.addAction(btn)
+            menu.addMenu(submenu)
+            menu.exec(self.seriestree.mapToGlobal(point))
 
     def createSR(self, index):
         global httpd
@@ -213,21 +219,21 @@ class Menu(QDialog):
         imgdata['PatientName'] = str(self.data['PatientName'].value)
         imgdata['PatientSex'] = str(self.data['PatientSex'].value)
         imgdata['StudyDescription'] = str(self.data['StudyDescription'].value)
-        imgdata['SeriesDescription'] = str(self.data['SeriesDescription'].value)
+        imgdata['SeriesDescription'] = f"{self.data['SeriesDescription'].value}-REPORT"
         imgdata['StudyInstanceUID'] = str(self.data['StudyInstanceUID'].value)
-        imgdata['SeriesInstanceUID'] = str(self.data['SeriesInstanceUID'].value)
+        imgdata['SeriesInstanceUID'] = generate_uid()
         imgdata['SOPInstanceUID'] = generate_uid()
         imgdata['InstanceCreationDate'] = "20050726"
         imgdata['InstanceCreationTime'] = "102049"
         imgdata['Date'] = datetime.datetime.now().strftime('%Y%m%d')
         imgdata['Time'] = datetime.datetime.now().strftime('%H%M%S')
         templconf.fname = self.srBtns[index].text()
-        with open(f"./template/{templconf.fname}/{templconf.fname}.xml", 'r') as sr:
+        with open(f"./template/{templconf.fname}/{templconf.fname}.xml", 'r', encoding='utf-8') as sr:
             txt = sr.read()
         for k, v in imgdata.items():
             pat = f"{{{k}}}"
             txt = re.sub(pat, v, txt)
-        with open("./output/output.xml", 'w') as out:
+        with open("./output/output.xml", 'w', encoding='utf-8') as out:
             out.write(txt)
         if self.srThread is not None:
             templconf.httpd.shutdown()

@@ -2,7 +2,7 @@ import re
 
 def getcodes():
     codes = {}
-    with open("./postprocessing/CID.md", 'r') as f:
+    with open("./postprocessing/CID.md", 'r', encoding='utf-8') as f:
         txt = f.read()
     codelist = re.findall('# CID (\d.*?)\n(?:.*?\n){2}((?:\| \d.*? \| .*? \| .*? \|\n)*)', txt)
     for line in codelist:

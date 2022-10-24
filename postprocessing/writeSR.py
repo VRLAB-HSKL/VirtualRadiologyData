@@ -19,7 +19,6 @@ def writeSR(values):
                 f"{zv[1]}   <designator>{ov[0]}</designator>\n"\
                 f"{zv[1]}</scheme>\n"\
                 f"{zv[1]}<meaning>{ov[1]}</meaning>"
-     #           print(f"{pat}: {code}")
                 txt = re.sub(pat, code, txt)
 
 
@@ -28,7 +27,7 @@ def writeSR(values):
             v = v.replace('-', '')
         pat = "{"+k+"}"
         txt = re.sub(pat, v, txt)
-    with open("./output/output.xml", 'w') as out:
+    with open("./output/output.xml", 'w', encoding='utf-8') as out:
         out.write(txt)
     os.system("xml2dsr ./output/output.xml ./output/output.dcm")
     with pydicom.dcmread("./output/output.dcm") as ds:

@@ -142,11 +142,11 @@
 | 99_1802  | 99_HS-KL          | sonstige |
 
 # CID 99_19
-| value   | scheme designator | meaning               |
-|---------|-------------------|-----------------------|
-| 99_1901 | 99_HS-KL          | liegt nicht vor       |
-| 99_1902 | 99_HS-KL          | kleinvolumig [≤1cm]   |
-| 99_1903 | 99_HS-KL          | großvolumig [&gt;1cm] |
+| value   | scheme designator | meaning             |
+|---------|-------------------|---------------------|
+| 99_1901 | 99_HS-KL          | liegt nicht vor     |
+| 99_1902 | 99_HS-KL          | kleinvolumig [≤1cm] |
+| 99_1903 | 99_HS-KL          | großvolumig [>1cm]  |
 
 # CID 99_20
 | value   | scheme designator | meaning                         |
