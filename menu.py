@@ -233,6 +233,7 @@ class Menu(QDialog):
     def createSR(self, index):
         global httpd
         imgdata = {}
+        imgdata['ReferencedSeriesUID'] = str(self.data['SeriesInstanceUID'].value)
         imgdata['PatientID'] = str(self.data['PatientID'].value)
         imgdata['PatientName'] = str(self.data['PatientName'].value)
         imgdata['PatientSex'] = str(self.data['PatientSex'].value)
