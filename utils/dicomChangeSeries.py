@@ -1,6 +1,5 @@
 from pydicom.uid import generate_uid
-import pydicom
-import convertDicomDir
+import convertDir
 
 fin = r"/path/to/series"
 fout = r"/output/folder"

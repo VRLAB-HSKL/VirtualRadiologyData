@@ -51,10 +51,11 @@ class PatientWorker(QThread):
             res = elem.PatientID
             Patient(elem)
         Patient.patients = dict(sorted(Patient.patients.items(), key=lambda i: i[1].patname))
-        if res != None:
-            self.rebound.emit(res)
-        else:
-            print("######NO DATA######")
+        self.rebound.emit(res)
+        #if res != None:
+        #    self.rebound.emit(res)
+        #else:
+        #    print("######NO DATA######")
         self.stop()
     
     def stop(self):

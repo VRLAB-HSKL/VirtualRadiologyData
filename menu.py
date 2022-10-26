@@ -22,17 +22,19 @@ class Menu(QDialog):
         self.patienttree.hideColumn(0)
         self.patienttree.setAlternatingRowColors(True)
         self.patienttree.setHeaderLabels(["PatientID", "PatientName", "PatientSex", "BirthDate"])
-        self.patienttree.itemClicked.connect(self.patient_line_click_handler)
+        self.patienttree.itemClicked.connect(self.patient_line_singleclick_handler)
+        self.patienttree.itemDoubleClicked.connect(self.patient_line_doubleclick_handler)
         '''Study TreeWidget Einstellungen'''
         self.studytree.hideColumn(0)
         self.studytree.setAlternatingRowColors(True)
         self.studytree.setHeaderLabels(["StudyUID", "PatientID", "StudyDate", "StudyDescription"])
-        self.studytree.itemClicked.connect(self.study_line_click_handler)
+        self.studytree.itemClicked.connect(self.study_line_singleclick_handler)
+        self.studytree.itemDoubleClicked.connect(self.study_line_doubleclick_handler)
         '''Series TreeWidget Einstellungen'''
         self.seriestree.hideColumn(0)
         self.seriestree.setAlternatingRowColors(True)
         self.seriestree.setHeaderLabels(["SeriesUID", "Modality", "SeriesDescription", "SeriesDate"])
-        self.seriestree.itemDoubleClicked.connect(self.series_line_click_handler)
+        self.seriestree.itemDoubleClicked.connect(self.series_line_doubleclick_handler)
         self.seriestree.itemClicked.connect(self.series_line_singleclick_handler)
         self.seriestree.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.seriestree.customContextMenuRequested.connect(self.menuContextTree)
@@ -113,8 +115,7 @@ class Menu(QDialog):
         else:
             print("#######NO DATA#######")
 
-        
-    def patient_line_click_handler(self):
+    def select_patient(self):
         self.role = 'study'
         if self.thread:
             self.thread.terminate()
@@ -125,14 +126,23 @@ class Menu(QDialog):
         pat = patient.Patient.patients[self.id]
         self.data = copy.deepcopy(pat.data)
         self.label.setText(f"{self.data}")
-        self.seriestree.clear()
+        self.studytree.clear()
+
+    def patient_line_doubleclick_handler(self):
+        study.Study.studies = {}
+        series.Series.serieses = {}
+        self.select_patient()
+        self.loadData()
+
+    def patient_line_singleclick_handler(self):
+        self.select_patient()
         if any(v.patid == self.id for k, v in study.Study.studies.items()):
             self.loadhandler()
         else:
             self.loadData()
     
-            
-    def study_line_click_handler(self):
+
+    def select_study(self):
         self.role = 'series'
         """auswählen einer Study"""
         if self.thread:
@@ -145,12 +155,20 @@ class Menu(QDialog):
         for k, v in std.data.items():
             self.data.add_new(k, v.VR, v.value)
         self.label.setText(f"{self.data}")
+
+    def study_line_doubleclick_handler(self):
+        series.Series.serieses = {}
+        self.select_study()
+        self.loadData()
+
+    def study_line_singleclick_handler(self):
+        self.select_study()
         if any(v.stduid == self.id for k, v in series.Series.serieses.items()):
             self.loadhandler()
         else:
             self.loadData()
-    
-    def series_line_click_handler(self):
+
+    def series_line_doubleclick_handler(self):
         self.role = 'image'
         """auswählen einer Series"""
         if self.thread:

@@ -9,7 +9,7 @@ def convert(seruid, path=None, name=None):
         path = ".\\"
     else:
         path = f"{path}\\"
-    form = 'uint8'
+    encoding = 'uint8'
         
     
     
@@ -23,7 +23,7 @@ def convert(seruid, path=None, name=None):
     cube = image.Image.images[ds.SeriesInstanceUID].volume
     cube = cube.astype("uint8")
     cube = cube[::-1, :, ::-1]
-    cube.astype(form).tofile(f"{path}{name}.raw")
+    cube.astype(encoding).tofile(f"{path}{name}.raw")
     
     
     string = f"{ds.PatientName}\n"\
@@ -62,5 +62,5 @@ def convert(seruid, path=None, name=None):
                    f"dimy:{cube.shape[1]}\n"
                    f"dimz:{cube.shape[0]}\n"
                    f"skip:0\n"
-                   f"format:{form}")
+                   f"format:{encoding}")
 

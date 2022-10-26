@@ -3,10 +3,10 @@ import pydicom
 import numpy as np
 from os import listdir
 from os.path import isfile, join
-import image
 
-import dicomToFiles
-
+sys.path.append("..") # Adds higher directory to python modules path.
+from preprocessing import image
+from preprocessing import dicomToFiles
 
 def loadFieles(instanceList, path):
     onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
