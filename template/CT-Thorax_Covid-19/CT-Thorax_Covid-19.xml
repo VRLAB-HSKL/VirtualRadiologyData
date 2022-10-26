@@ -44,10 +44,21 @@
           </scheme>
           <meaning>CT-Thorax Covid-19</meaning>
         </concept>
-        <container flag="SEPARATE">
+        <uidref>
           <relationship>CONTAINS</relationship>
           <concept>
             <value>101</value>
+            <scheme>
+              <designator>99_HS-KL</designator>
+            </scheme>
+            <meaning>ReferencedSeriesUID</meaning>
+          </concept>
+          <value>{ReferencedSeriesUID}</value>
+        </uidref>
+        <container flag="SEPARATE">
+          <relationship>CONTAINS</relationship>
+          <concept>
+            <value>102</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -67,7 +78,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10101</value>
+              <value>10201</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -88,7 +99,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10102</value>
+              <value>10202</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -109,7 +120,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10103</value>
+              <value>10203</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -142,7 +153,7 @@
         <container flag="SEPARATE">
           <relationship>CONTAINS</relationship>
           <concept>
-            <value>102</value>
+            <value>103</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -163,7 +174,7 @@
         <container flag="SEPARATE">
           <relationship>CONTAINS</relationship>
           <concept>
-            <value>103</value>
+            <value>104</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -172,7 +183,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10301</value>
+              <value>10401</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -204,7 +215,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10302</value>
+              <value>10402</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -225,7 +236,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10303</value>
+              <value>10403</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -234,7 +245,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030301</value>
+                <value>1040301</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -255,7 +266,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030302</value>
+                <value>1040302</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -276,7 +287,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030303</value>
+                <value>1040303</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -297,7 +308,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030304</value>
+                <value>1040304</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -318,7 +329,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030305</value>
+                <value>1040305</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -339,7 +350,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030306</value>
+                <value>1040306</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -360,7 +371,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030307</value>
+                <value>1040307</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -381,7 +392,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030308</value>
+                <value>1040308</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -413,7 +424,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030309</value>
+                <value>1040309</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -434,7 +445,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>10303010</value>
+                <value>10403010</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -467,7 +478,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10304</value>
+              <value>10404</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -476,7 +487,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030401</value>
+                <value>1040401</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -497,7 +508,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030402</value>
+                <value>1040402</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -518,7 +529,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030403</value>
+                <value>1040403</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -550,7 +561,7 @@
             <container flag="SEPARATE">
               <relationship>CONTAINS</relationship>
               <concept>
-                <value>1030404</value>
+                <value>1040404</value>
                 <scheme>
                   <designator>99_HS-KL</designator>
                 </scheme>
@@ -573,7 +584,7 @@
         <container flag="SEPARATE">
           <relationship>CONTAINS</relationship>
           <concept>
-            <value>104</value>
+            <value>105</value>
             <scheme>
               <designator>99_HS-KL</designator>
             </scheme>
@@ -582,7 +593,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10401</value>
+              <value>10501</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
@@ -603,7 +614,7 @@
           <container flag="SEPARATE">
             <relationship>CONTAINS</relationship>
             <concept>
-              <value>10402</value>
+              <value>10502</value>
               <scheme>
                 <designator>99_HS-KL</designator>
               </scheme>
