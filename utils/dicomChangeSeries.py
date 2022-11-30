@@ -5,7 +5,7 @@ fin = r"/path/to/series"
 fout = r"/output/folder"
 series = "Series Description"
 seriesUID = generate_uid()
-imglist = convertDicomDir.imagelist(fin)
+imglist = convertDir.imagelist(fin)
 for i, ds in enumerate(imglist):
     ds.SeriesDescription = series
     ds.SeriesInstanceUID = seriesUID

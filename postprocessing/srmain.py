@@ -43,13 +43,12 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 def main():
     handler = MyHttpRequestHandler
-    addr = ("", 8000)
     socketserver.ThreadingTCPServer.allow_reuse_address = True
-    templconf.httpd = socketserver.ThreadingTCPServer(addr, handler)
-    webbrowser.open(f'http://127.0.0.1:{addr[1]}', new=0, autoraise=True)
+    templconf.httpd = socketserver.ThreadingTCPServer((templconf.ip, templconf.port), handler)
+    webbrowser.open(f'http://{templconf.ip}:{templconf.port}', new=0, autoraise=True)
     templconf.httpd.serve_forever()
     templconf.httpd.server_close()
-    print("Server has been shut down!")
+    print("Server was shut down!")
 
 if __name__ == "__main__":
     import templconf

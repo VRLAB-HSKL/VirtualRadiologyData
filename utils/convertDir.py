@@ -28,13 +28,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hn:p:", )
     except getopt.GetoptError:
-        print
-        'dicomToRaw -n <nameOfOutput> -p <pathToDirectory>'
+        print('convertDir -n <nameOfOutput> -p <pathToDirectory>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print
-            'dicomToRaw -n <nameOfOutput> -p <pathToDirectory>'
+            print('convertDir -n <nameOfOutput> -p <pathToDirectory>')
             sys.exit()
         elif opt in ("-n"):
             name = arg

@@ -1,17 +1,13 @@
-from PyQt6 import QtGui
-from PyQt6 import QtCore
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
-import sys
-import os
 import cv2
-from preprocessing.showimg2d import bildDaten, fenster
+from showImg2D import fenster, bildDaten
 
 
 class WindowTransversal(QDialog):
     def __init__(self, img):
         super().__init__()
-        loadUi("./preprocessing/showimg2d/bilder.ui", self)
+        loadUi("./showImg2D/bilder.ui", self)
         self.setWindowTitle('Transversalebene')
         '''Attribute'''
         self.fenster = fenster.Fenster(self)

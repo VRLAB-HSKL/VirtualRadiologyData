@@ -1,12 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 18 06:24:31 2021
-
-@author: Rafael
-"""
-
 from pydicom.dataset import Dataset
-from pydicom.uid import UID
 from pynetdicom import AE, evt, build_role, debug_logger
 from pynetdicom.sop_class import (
     PatientRootQueryRetrieveInformationModelGet,
@@ -23,8 +15,6 @@ def handle_store(event):
     ds.file_meta = event.file_meta
 
     instanceList.append(ds)
-    #print(len(instanceList))
-    #print("______________________________________")
 
     # Return a 'Success' status
     return 0x0000
@@ -48,12 +38,11 @@ def c_get(seriesid):
     ds = Dataset()
     ds.QueryRetrieveLevel = 'SERIES'
     # Unique key for PATIENT level
-    ds.PatientID = ''  # NOID
+    #ds.PatientID = ''  # NOID
     # Unique key for STUDY level
-    ds.StudyInstanceUID = ''
+    #ds.StudyInstanceUID = ''
     # Unique key for SERIES level
     ds.SeriesInstanceUID = seriesid
-    print(ds)
     # Associate with peer AE at IP 127.0.0.1 and port 4242
     print(f"{config.pacsIP = }, {config.pacsPort = }")
     assoc = ae.associate(config.pacsIP, config.pacsPort, ext_neg=[role], evt_handlers=handlers)

@@ -1,7 +1,10 @@
-import datetime, threading, time
-from pydicom import Dataset
+import datetime
+
 from PyQt6.QtCore import QThread, pyqtSignal
+from pydicom import Dataset
+
 from preprocessing import cfind
+
 
 def toISOdate(dcmdate):
     date = str(dcmdate)
@@ -24,6 +27,7 @@ class Patient():
         self.patsex = ds.PatientSex
         self.patbirthdate = ds.PatientBirthDate
         self.data = ds
+        print(f"{self.data = }")
         Patient.patients[self.id] = self
         
     def toTreeView(self):

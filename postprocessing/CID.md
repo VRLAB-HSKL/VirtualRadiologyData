@@ -44,7 +44,7 @@
 | 261665006 | SCT               | Unbekannt       |
 | 309904001 | SCT               | Intensivstation |
 | 99_603    | 99_HS-KL          | Stationär       |
-| 99_604    | 99_HS-KL          | Notaufnahme     |
+| 225728007 | SCT               | Notaufnahme     |
 | 99_605    | 99_HS-KL          | Ambulant        |
 
 # CID 99_7

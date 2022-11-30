@@ -1,4 +1,3 @@
-import numpy as np
 from preprocessing import image, series
 
 
@@ -18,7 +17,7 @@ def convert(seruid, path=None, name=None):
      
     ds.InstitutionAddress = ds.InstitutionAddress if ("InstitutionAddress" in ds) else 'Unknown'
     if not name:
-        name = series.Series.serieses[ds.SeriesInstanceUID].getFilename()
+        name = series.Series.series[ds.SeriesInstanceUID].getFilename()
        
     cube = image.Image.images[ds.SeriesInstanceUID].volume
     cube = cube.astype("uint8")

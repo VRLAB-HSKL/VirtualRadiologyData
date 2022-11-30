@@ -1,11 +1,10 @@
-import datetime
 from pydicom import Dataset
 from PyQt6.QtCore import QThread, pyqtSignal
 from preprocessing import cfind, study, patient
 
 class Series():
     
-    serieses = {}
+    series = {}
     
     def __init__(self, ds):
         self.UID = ds.SeriesInstanceUID
@@ -14,7 +13,7 @@ class Series():
         self.serdesc = ds.SeriesDescription
         self.modality = ds.Modality
         self.data = ds
-        Series.serieses[self.UID] = self
+        Series.series[self.UID] = self
 
     def toTreeView(self):
         return [self.UID, self.modality, self.serdesc, patient.toISOdate(self.serdate)]
@@ -47,7 +46,7 @@ class SeriesWorker(QThread):
         for elem in data:
             res = elem.StudyInstanceUID
             Series(elem)
-        Series.serieses = dict(sorted(Series.serieses.items(), key=lambda i: i[1].serdesc))
+        Series.series = dict(sorted(Series.series.items(), key=lambda i: i[1].serdesc))
         if res != None:
             self.rebound.emit(res)
         else:

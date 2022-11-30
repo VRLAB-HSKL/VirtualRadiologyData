@@ -1,41 +1,49 @@
-from PyQt6 import QtCore
-from PyQt6.QtWidgets import QDialog, QTreeWidgetItem, QMenu
-from PyQt6.QtGui import QAction
-from PyQt6.uic import loadUi
-import os, sys, subprocess, tempfile, threading, datetime, re
-from pydicom import Dataset
-from pydicom.uid import generate_uid
-from threading import Thread
-from pathlib import Path
 import copy
+import datetime
+import os
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+from threading import Thread
+
+from PyQt6 import QtCore
+from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QDialog, QTreeWidgetItem, QMenu
+from PyQt6.uic import loadUi
+from pydicom.uid import generate_uid
+
+import config
 from postprocessing import srmain, templconf
 from preprocessing import patient, study, series, image, dicomToFiles
-from preprocessing.showimg2d import windowTransversal
-import config
+from showImg2D import windowTransversal
+
 
 class Menu(QDialog):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("VirtualRadiologyData")
         loadUi(os.path.join(sys.path[0], "menu.ui"), self)
         self.server = config.pacsIP
-        '''Study TreeWidget Einstellungen'''
+        '''Patient TreeWidget Einstellungen'''
         self.patienttree.hideColumn(0)
         self.patienttree.setAlternatingRowColors(True)
         self.patienttree.setHeaderLabels(["PatientID", "PatientName", "PatientSex", "BirthDate"])
-        self.patienttree.itemClicked.connect(self.patient_line_singleclick_handler)
-        self.patienttree.itemDoubleClicked.connect(self.patient_line_doubleclick_handler)
+        self.patienttree.itemClicked.connect(self.patient_singleclick_handler)
+        self.patienttree.itemDoubleClicked.connect(self.patient_doubleclick_handler)
         '''Study TreeWidget Einstellungen'''
         self.studytree.hideColumn(0)
         self.studytree.setAlternatingRowColors(True)
         self.studytree.setHeaderLabels(["StudyUID", "PatientID", "StudyDate", "StudyDescription"])
-        self.studytree.itemClicked.connect(self.study_line_singleclick_handler)
-        self.studytree.itemDoubleClicked.connect(self.study_line_doubleclick_handler)
+        self.studytree.itemClicked.connect(self.study_singleclick_handler)
+        self.studytree.itemDoubleClicked.connect(self.study_doubleclick_handler)
         '''Series TreeWidget Einstellungen'''
         self.seriestree.hideColumn(0)
         self.seriestree.setAlternatingRowColors(True)
         self.seriestree.setHeaderLabels(["SeriesUID", "Modality", "SeriesDescription", "SeriesDate"])
-        self.seriestree.itemDoubleClicked.connect(self.series_line_doubleclick_handler)
-        self.seriestree.itemClicked.connect(self.series_line_singleclick_handler)
+        self.seriestree.itemDoubleClicked.connect(self.series_doubleclick_handler)
+        self.seriestree.itemClicked.connect(self.series_singleclick_handler)
         self.seriestree.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.seriestree.customContextMenuRequested.connect(self.menuContextTree)
         '''Button Einstellungen'''
@@ -51,7 +59,7 @@ class Menu(QDialog):
         self.data = None
         self.thread = None
         self.srThread = None
-        self.id = None #ID des zuletzt ausgewählten Eintrag (kann PatientID, StudyInstanceUID oder SeriesInstanceUID sein)
+        self.id = None  #ID des zuletzt ausgewählten Eintrag (kann PatientID, StudyInstanceUID oder SeriesInstanceUID sein)
         
         self.tempdir = tempfile.TemporaryDirectory() #Anlegen eines temporären Ordners für die Bilddateien
         print(self.tempdir.name)
@@ -80,9 +88,10 @@ class Menu(QDialog):
             self.thread = image.ImageWorker(self.id)
             self.schichtenBtn.setText("downloading ...")
         self.thread.start()
-        self.thread.rebound.connect(self.loadhandler)
+        self.thread.rebound.connect(self.showData)
         
-    def loadhandler(self):
+    def showData(self):
+        dictionary = {}
         if self.role == 'patient':
             dictionary = patient.Patient.patients
             tree = self.patienttree
@@ -91,7 +100,7 @@ class Menu(QDialog):
             tree = self.studytree
             tree.clear()
         if self.role == 'series':
-            dictionary = series.Series.serieses
+            dictionary = series.Series.series
             tree = self.seriestree
             tree.clear()
         if self.role == 'image':
@@ -127,20 +136,21 @@ class Menu(QDialog):
         self.data = copy.deepcopy(pat.data)
         self.label.setText(f"{self.data}")
         self.studytree.clear()
+        self.seriestree.clear()
 
-    def patient_line_doubleclick_handler(self):
+    def patient_singleclick_handler(self):
+        self.select_patient()
+        if any(v.patid == self.id for k, v in study.Study.studies.items()):
+            self.showData()
+        else:
+            self.loadData()
+
+    def patient_doubleclick_handler(self):
         study.Study.studies = {}
-        series.Series.serieses = {}
+        series.Series.series = {}
         self.select_patient()
         self.loadData()
 
-    def patient_line_singleclick_handler(self):
-        self.select_patient()
-        if any(v.patid == self.id for k, v in study.Study.studies.items()):
-            self.loadhandler()
-        else:
-            self.loadData()
-    
 
     def select_study(self):
         self.role = 'series'
@@ -155,20 +165,33 @@ class Menu(QDialog):
         for k, v in std.data.items():
             self.data.add_new(k, v.VR, v.value)
         self.label.setText(f"{self.data}")
+        self.seriestree.clear()
 
-    def study_line_doubleclick_handler(self):
-        series.Series.serieses = {}
+    def study_singleclick_handler(self):
         self.select_study()
-        self.loadData()
-
-    def study_line_singleclick_handler(self):
-        self.select_study()
-        if any(v.stduid == self.id for k, v in series.Series.serieses.items()):
-            self.loadhandler()
+        if any(v.stduid == self.id for k, v in series.Series.series.items()):
+            self.showData()
         else:
             self.loadData()
 
-    def series_line_doubleclick_handler(self):
+    def study_doubleclick_handler(self):
+        series.Series.series = {}
+        self.select_study()
+        self.loadData()
+
+    def series_singleclick_handler(self):
+        item = self.seriestree.currentItem()
+        self.id = item.text(0)
+        ser = series.Series.series[self.id]
+        for k, v in ser.data.items():
+            self.data.add_new(k, v.VR, v.value)
+        self.label.setText(f"{self.data}")
+        if str(self.data['SeriesInstanceUID'].value) in image.Image.images:
+            self.schichtenBtn.setEnabled(True)
+        else:
+            self.schichtenBtn.setEnabled(False)
+
+    def series_doubleclick_handler(self):
         self.role = 'image'
         """auswählen einer Series"""
         if self.thread:
@@ -179,28 +202,16 @@ class Menu(QDialog):
         self.vrBtn.setEnabled(False)
         item = self.seriestree.currentItem()
         self.id = item.text(0)
-        ser = series.Series.serieses[self.id]
+        ser = series.Series.series[self.id]
         for k, v in ser.data.items():
             self.data.add_new(k, v.VR, v.value)
         self.label.setText(f"{self.data}")
         if ser.data.Modality != "SR":
             if any(k == self.id for k, v in image.Image.images.items()):
-                self.loadhandler()
+                self.showData()
             else:
                 self.loadData()
-    
-    def series_line_singleclick_handler(self):
-        item = self.seriestree.currentItem()
-        self.id = item.text(0)
-        ser = series.Series.serieses[self.id]
-        for k, v in ser.data.items():
-            self.data.add_new(k, v.VR, v.value)
-        self.label.setText(f"{self.data}")
-        if str(self.data['SeriesInstanceUID'].value) in image.Image.images:
-            self.schichtenBtn.setEnabled(True)
-        else:
-            self.schichtenBtn.setEnabled(False)
-           
+
     def schichtenbtn_clicked(self):
         if ("SeriesInstanceUID" in self.data):
             window = windowTransversal.WindowTransversal(image.Image.images[self.data.SeriesInstanceUID])
@@ -208,7 +219,7 @@ class Menu(QDialog):
             
     def vrBtn_clicked(self):
         if self.id in image.Image.images:
-            subprocess.Popen([config.VirtRadPath, "-ap", self.tempdir.name, "-m", f"{series.Series.serieses[self.id].getFilename()}"])
+            subprocess.Popen([config.VirtRadPath, "-ap", self.tempdir.name, "-m", f"{series.Series.series[self.id].getFilename()}"])
         else:
             self.vrBtn.setText("keine Serie ausgewählt!")
 
@@ -220,7 +231,7 @@ class Menu(QDialog):
 
         item = self.seriestree.itemAt(point)
         self.id = item.text(0)
-        self.series_line_singleclick_handler()
+        self.series_singleclick_handler()
 
         if item.text(1) != "SR":
             menu = QMenu()
@@ -232,25 +243,28 @@ class Menu(QDialog):
 
     def createSR(self, index):
         global httpd
-        imgdata = {}
-        imgdata['ReferencedSeriesUID'] = str(self.data['SeriesInstanceUID'].value)
-        imgdata['PatientID'] = str(self.data['PatientID'].value)
-        imgdata['PatientName'] = str(self.data['PatientName'].value)
-        imgdata['PatientSex'] = str(self.data['PatientSex'].value)
-        imgdata['StudyDescription'] = str(self.data['StudyDescription'].value)
-        imgdata['SeriesDescription'] = f"{self.data['SeriesDescription'].value}-REPORT"
-        imgdata['StudyInstanceUID'] = str(self.data['StudyInstanceUID'].value)
-        imgdata['SeriesInstanceUID'] = generate_uid()
-        imgdata['SOPInstanceUID'] = generate_uid()
-        imgdata['InstanceCreationDate'] = "20050726"
-        imgdata['InstanceCreationTime'] = "102049"
-        imgdata['Date'] = datetime.datetime.now().strftime('%Y%m%d')
-        imgdata['Time'] = datetime.datetime.now().strftime('%H%M%S')
+        time = datetime.datetime.now().strftime('%H%M%S')
+        date = datetime.datetime.now().strftime('%Y%m%d')
+        imgdata = {
+            'ReferencedSeriesUID' : str(self.data['SeriesInstanceUID'].value),
+            'PatientID' : str(self.data['PatientID'].value),
+            'PatientName' : str(self.data['PatientName'].value),
+            'PatientSex' : str(self.data['PatientSex'].value),
+            'StudyDescription' : str(self.data['StudyDescription'].value),
+            'SeriesDescription' : f"{self.data['SeriesDescription'].value}-REPORT",
+            'StudyInstanceUID' : str(self.data['StudyInstanceUID'].value),
+            'SeriesInstanceUID' : generate_uid(),
+            'SOPInstanceUID' : generate_uid(),
+            'InstanceCreationDate' : date,
+            'InstanceCreationTime' : time,
+            'Date' : date,
+            'Time' : time
+        }
         templconf.fname = self.srBtns[index].text()
         with open(f"./template/{templconf.fname}/{templconf.fname}.xml", 'r', encoding='utf-8') as sr:
             txt = sr.read()
         for k, v in imgdata.items():
-            pat = f"{{{k}}}"
+            pat = f"{{{k}}}" #-> '{k}'
             txt = re.sub(pat, v, txt)
         with open("./output/output.xml", 'w', encoding='utf-8') as out:
             out.write(txt)

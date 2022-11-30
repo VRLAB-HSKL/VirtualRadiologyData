@@ -1,16 +1,14 @@
 import numpy as np
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
-import sys
-import os
 import cv2
-from preprocessing.showimg2d import fenster
+from showImg2D import fenster
 
 
 class WindowSagittal(QDialog):
     def __init__(self, fenster, bild_daten):
         super().__init__()
-        loadUi("./preprocessing/showimg2d/bilder.ui", self)
+        loadUi("./showImg2D/bilder.ui", self)
         self.setWindowTitle('Sagittalebene')
         '''Attribute'''
         self.fenster = fenster
